@@ -1,5 +1,5 @@
 ---
-site.title: Measurement Uncertainty
+title: Measurement Uncertainty
 ---
 
 
