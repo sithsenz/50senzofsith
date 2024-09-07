@@ -1,4 +1,6 @@
-{{title: Measurement Uncertainty}}
+---
+title: Measurement Uncertainty
+---
 
 
 # Let's try an equation
