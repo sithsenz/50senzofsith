@@ -1,6 +1,5 @@
 ---
-title: Measurement Uncertainty
-layout: default
+site.title: Measurement Uncertainty
 ---
 
 
