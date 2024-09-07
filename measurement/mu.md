@@ -1,6 +1,4 @@
-'''
-title: Measurement Uncertainty
-'''
+{{page.title: Measurement Uncertainty}}
 
 
 # Let's try an equation
