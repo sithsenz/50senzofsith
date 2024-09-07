@@ -1,5 +1,6 @@
 ---
 title: Measurement Uncertainty
+layout: default
 ---
 
 
