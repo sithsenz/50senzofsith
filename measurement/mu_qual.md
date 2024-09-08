@@ -71,6 +71,8 @@ Although *Positive Predictive Value* (PPV) and *Negative Predictive Value* (NPV)
 
 ### Example of Prevalence Impact
 
+Let's compare PPV, NPV, and likelihood ratios at different prevalence levels. Given the same test sensitivity, specificity and likelihood ratios, the PPV will be low due to the low prevalence, while the NPV and accuracy will be high due to the low prevalence.
+
 <table>
   <th>
     <td>Equal Prevalence</td>
@@ -138,8 +140,6 @@ Although *Positive Predictive Value* (PPV) and *Negative Predictive Value* (NPV)
     <td>94.11</td>
   </tr>
 </table>
-
-Let's compare PPV, NPV, and likelihood ratios at different prevalence levels. Given the same test sensitivity, specificity and likelihood ratios, the PPV will be low due to the low prevalence, while the NPV and accuracy will be high due to the low prevalence.
 
 ## Sources of Data for MU Analysis
 
@@ -265,7 +265,7 @@ In this example, the laboratory uses data from the MV study and IQC to estimate 
   </tr>
   <tr>
     <td>2023</td>
-    <td>Previous MU estimation<br/><table><tr><td>31</td><td>2</td></tr><tr><td>1</td><td>30</td></tr></table></td>
+    <td>Previous MU<br/><table><tr><td>31</td><td>2</td></tr><tr><td>1</td><td>30</td></tr></table></td>
     <td>IQC (2022)<br/><table><tr><td>50</td><td>0</td></tr><tr><td>0</td><td>50</td></tr></table></td>
     <td><table><tr><td>81</td><td>2</td></tr><tr><td>1</td><td>80</td></tr></table></td>
     <td>$$\frac{81/82}{2/82} = 40.50$$</td>
@@ -273,7 +273,7 @@ In this example, the laboratory uses data from the MV study and IQC to estimate 
   </tr>
   <tr>
     <td>2024</td>
-    <td>Previous MU estimation<br/><table><tr><td>81</td><td>2</td></tr><tr><td>1</td><td>80</td></tr></table></td>
+    <td>MU (2023)<br/><table><tr><td>81</td><td>2</td></tr><tr><td>1</td><td>80</td></tr></table></td>
     <td>IQC (2023)<br/><table><tr><td>53</td><td>0</td></tr><tr><td>0</td><td>53</td></tr></table></td>
     <td><table><tr><td>134</td><td>2</td></tr><tr><td>1</td><td>133</td></tr></table></td>
     <td>$$\frac{134/135}{2/135} = 67.00$$</td>
