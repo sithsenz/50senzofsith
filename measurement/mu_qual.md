@@ -320,19 +320,64 @@ In this example, the laboratory uses data from the EQA program and IQC to estima
 
 ### Case 3
 
-In this example, the test used in the laboratory produces 3 outcomes, i.e. positive, intermediate, negative. The technical manager decided to pool together the positive and intermediate results as non-negative results because the test is used as a screening test and false negative is considered to have worse consequences than false positive. The reason for pooling these results is that our methodology is more suited for binomial outcomes. As such, the technical manager or laboratory director would need to provide justification on the reclassification of the data.
+In this example, the test used in the laboratory produces three possible outcomes: positive, intermediate, and negative. However, the technical manager has decided to group the positive and intermediate results together under a single category called non-negative, because this test is used for screening purposes, where false negatives are considered to have more serious consequences than false positives.
 
-## Applications of Bayes' Theorem in Clinical Diagnosis
+This reclassification simplifies the analysis by transforming the test outcomes into binary results, which is more compatible with our methodology. The technical manager or laboratory director would need to provide a clear justification for this reclassification, explaining why it is appropriate to combine the positive and intermediate results in the context of the test’s clinical use and objectives.
 
-Let's consider two examples where Bayes' Theorem is applied in clinical diagnosis using likelihood ratios.
+After the reclassification, measurement uncertainty (MU) estimation can proceed using the same approach as outlined in Case 1 and Case 2. With the test outcomes now categorized into non-negative (positive + intermediate) and negative results, we can apply the same Bayesian analysis framework.
 
-### Example 1: Low Prevalence Condition (0.1%)
+Before reclassification:
 
-For a condition with a low prevalence (e.g., rare genetic disorder), the LR+ can be used to adjust the pre-test probability and arrive at a more accurate post-test probability. Even with a high LR+, the post-test probability might remain low due to the low prevalence.
+<table>
+  <tr>
+    <td rowspan="2" colspan="2">Before reclassification</td>
+    <td colspan="2">Target Condition</td>
+  </tr>
+  <tr>
+    <td>Positive</td>
+    <td>Negative</td>
+  </tr>
+  <tr>
+    <td rowspan="3">Test Result</td>
+    <td>Detected</td>
+    <td>a</td>
+    <td>b</td>
+  </tr>
+  <tr>
+    <td>Intermediate</td>
+    <td>c</td>
+    <td>d</td>
+  </tr>
+  <tr>
+    <td>Not Detected</td>
+    <td>e</td>
+    <td>f</td>
+  </tr>
+</table>
 
-### Example 2: High Prevalence Condition (50%)
+After reclassification, note that the number of false positives (b + d) has increased, while the number of false negatives remains unchanged from before the reclassification.:
 
-For a condition with higher prevalence (e.g., common infection), the LR- helps adjust the pre-test probability downward if the test is negative, allowing for a more nuanced understanding of the result.
+<table>
+  <tr>
+    <td rowspan="2" colspan="2">After reclassification</td>
+    <td colspan="2">Target Condition</td>
+  </tr>
+  <tr>
+    <td>Positive</td>
+    <td>Negative</td>
+  </tr>
+  <tr>
+    <td rowspan="2">Test Result</td>
+    <td>Non-(Not Detected)</td>
+    <td>a + c</td>
+    <td>b + d</td>
+  </tr>
+  <tr>
+    <td>Not Detected</td>
+    <td>e</td>
+    <td>f</td>
+  </tr>
+</table>
 
 ## References
 + [Eurachem / CITAC](https://www.eurachem.org/index.php/publications/guides/performance-and-uncertainty-in-qualitative-analysis)
