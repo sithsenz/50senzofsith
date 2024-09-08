@@ -145,11 +145,11 @@ Let's compare PPV, NPV, and likelihood ratios at different prevalence levels. Gi
 
 Data for constructing the contingency table in the context of measurement uncertainty analysis can come from several sources:
 
-1. Validation studies conducted by the manufacturer and the user.
+1. *Validation* (MV) studies conducted by the manufacturer and the user.
 2. Published literature on the performance of similar tests.
-3. Participation in external quality assurance (EQA) programs.
-4. Routine internal quality control (QC) checks.
-5. Prior estimation of measurement uncertainty (MU).
+3. Participation in *external quality assurance* (EQA) programs.
+4. Routine *internal quality control* (IQC) checks.
+5. Prior estimation of MU.
 
 These data sources can be combined using Bayes' Theorem, which is particularly useful in pooling information from different sources. When starting with minimal prior information, we often use a uniform non-informative prior such as Beta(1,1) for both TC.
 
@@ -239,6 +239,88 @@ which can be shown in this table:
     <td>1 + d</td>
   </tr>
 </table>
+
+## Examples of MU Estimation
+
+### Case 1
+
+In this example, the laboratory uses data from the MV study and IQC to estimate MU.
+
+<table>
+  <tr>
+    <td>Year</td>
+    <td>Prior</td>
+    <td>Data</td>
+    <td>Posterior</td>
+    <td>LR+</td>
+    <td>LR-</td>
+  </tr>
+  <tr>
+    <td>-</td>
+    <td>Uniform non-informative prior <br/><table><tr><td>1</td><td>1</td></tr><tr><td>1</td><td>1</td></tr></table></td>
+    <td>MV <br/><table><tr><td>30</td><td>1</td></tr><tr><td>0</td><td>29</td></tr></table></td>
+    <td><table><tr><td>31</td><td>2</td></tr><tr><td>1</td><td>30</td></tr></table></td>
+    <td>$$\frac{31/32}{2/32} = 15.50$$</td>
+    <td>$$\frac{30/32}{1/32} = 30.00$$</td>
+  </tr>
+  <tr>
+    <td>2023</td>
+    <td>Previous MU estimation<br/><table><tr><td>31</td><td>2</td></tr><tr><td>1</td><td>30</td></tr></table></td>
+    <td>IQC (2022)<br/><table><tr><td>50</td><td>0</td></tr><tr><td>0</td><td>50</td></tr></table></td>
+    <td><table><tr><td>81</td><td>2</td></tr><tr><td>1</td><td>80</td></tr></table></td>
+    <td>$$\frac{81/82}{2/82} = 40.50$$</td>
+    <td>$$\frac{80/82}{1/82} = 80.00$$</td>
+  </tr>
+  <tr>
+    <td>2024</td>
+    <td>Previous MU estimation<br/><table><tr><td>81</td><td>2</td></tr><tr><td>1</td><td>80</td></tr></table></td>
+    <td>IQC (2023)<br/><table><tr><td>53</td><td>0</td></tr><tr><td>0</td><td>53</td></tr></table></td>
+    <td><table><tr><td>134</td><td>2</td></tr><tr><td>1</td><td>133</td></tr></table></td>
+    <td>$$\frac{134/135}{2/135} = 67.00$$</td>
+    <td>$$\frac{133/135}{1/135} = 133.00$$</td>
+  </tr>
+</table>
+
+### Case 2
+
+In this example, the laboratory uses data from the EQA program and IQC to estimate MU. The laboratory has started the EQA program in year 2023.
+
+<table>
+  <tr>
+    <td rowspan="2">Year</td>
+    <td rowspan="2">Prior</td>
+    <td colspan="2">Data</td>
+    <td rowspan="2">Posterior</td>
+    <td rowspan="2">LR+</td>
+    <td rowspan="2">LR-</td>
+  </tr>
+  <tr>
+    <td>EQA</td>
+    <td>IQC</td>
+  </tr>
+  <tr>
+    <td>2023</td>
+    <td><table><tr><td>1</td><td>1</td></tr><tr><td>1</td><td>1</td></tr></table></td>
+    <td>-</td>
+    <td><table><tr><td>50</td><td>0</td></tr><tr><td>0</td><td>50</td></tr></table></td>
+    <td><table><tr><td>51</td><td>1</td></tr><tr><td>1</td><td>51</td></tr></table></td>
+    <td>$$\frac{51/52}{1/52} = 51.00$$</td>
+    <td>$$\frac{51/52}{1/52} = 51.00$$</td>
+  </tr>
+  <tr>
+    <td>2024</td>
+    <td><table><tr><td>51</td><td>1</td></tr><tr><td>1</td><td>51</td></tr></table></td>
+    <td><table><tr><td>16</td><td>1</td></tr><tr><td>0</td><td>15</td></tr></table></td>
+    <td><table><tr><td>50</td><td>0</td></tr><tr><td>0</td><td>50</td></tr></table></td>
+    <td><table><tr><td>117</td><td>2</td></tr><tr><td>1</td><td>116</td></tr></table></td>
+    <td>$$\frac{117/118}{2/118} = 58.50$$</td>
+    <td>$$\frac{116/118}{1/118} = 116.00$$</td>
+  </tr>
+</table>
+
+### Case 3
+
+In this example, the test used in the laboratory produces 3 outcomes, i.e. positive, intermediate, negative. The technical manager decided to pool together the positive and intermediate results as non-negative results because the test is used as a screening test and false negative is considered to have worse consequences than false positive. The reason for pooling these results is that our methodology is more suited for binomial outcomes. As such, the technical manager or laboratory director would need to provide justification on the reclassification of the data.
 
 ## Applications of Bayes' Theorem in Clinical Diagnosis
 
