@@ -199,7 +199,7 @@ These data sources can be combined using Bayes' Theorem, which is particularly u
 </table>
 
 Given the above observation, the posterior probability according to Bayes' Theorem is:  
-> $$P(\text{posterior}) \propto P(\text{prior}) \times P(\text{Likelihood})$$
+> $$P(\text{posterior}) \propto P(\text{prior}) \times P(\text{likelihood})$$
 
 given probability of Binomial(n, p) is:
 > $$P(x) = \left( \begin{array}{c}
