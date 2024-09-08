@@ -283,7 +283,7 @@ In this example, the laboratory uses data from the MV study and IQC to estimate 
 
 ### Case 2
 
-In this example, the laboratory uses data from the EQA program and IQC to estimate MU. The laboratory has started the EQA program in year 2023.
+In this example, the laboratory uses data from the EQA program and IQC to estimate MU. The laboratory has started the test in year 2022 and joined the EQA program in year 2023.
 
 <table>
   <tr>
