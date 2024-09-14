@@ -65,6 +65,7 @@ While Confidence Intervals (CI) are explicitly used in research, they are also i
 CIs provide a range of values within which the true population mean is expected to lie. For example:
 
 ![manyCI](images/manyCI.png "Repeated estimation (20 experiments) of CI from the same population")
+*source: [Wikipedia](https://en.wikipedia.org/wiki/Confidence_interval)*
 
 + A 50% CI means half of the calculated intervals will contain the population mean.
 + A 95% CI means 95% of the intervals will contain the population mean.
@@ -82,3 +83,5 @@ For instance, if the 95% CI of the slope in a method comparison study contains 1
 ## Closing Thoughts
 Understanding the overarching concepts in biostatistics, rather than memorizing formulas, is essential for applying these principles in a laboratory setting.
 With practice, laboratory professionals can build intuition and proficiency, allowing for more accurate interpretation of data and improved decision-making.
+
+*[Table of Content](/index.md)*
