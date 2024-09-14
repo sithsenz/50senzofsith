@@ -385,4 +385,4 @@ After reclassification, note that the number of false positives (b + d) has incr
 + [JCGM-GUM-3](https://www.bipm.org/documents/20126/2071204/JCGM_100_2008_E.pdf/cb0ef43f-baa5-11cf-3f85-4dcd86f77bd6?version=1.16&t=1716986360859&download=true)
 + [JCGM-GUM-7](https://www.bipm.org/documents/20126/2071204/JCGM_101_2008_E.pdf/325dcaad-c15a-407c-1105-8b7f322d651c?version=1.16&t=1716986453493&download=true)
 
-*[Table of Content](/index.md)*
+*[Table of Content](../index.md)*
