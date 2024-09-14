@@ -7,7 +7,7 @@ offering insights into how these principles apply to the practical challenges we
 Rather than a basic lesson, this article is aimed at those who already possess a foundational understanding of biostatistics.
 The goal is not to cover elementary definitions or introduce new concepts from scratch, but to present a fresh,
 more intuitive perspective on how to apply biostatistics in real-world laboratory settings.
-This includes revisiting familiar concepts like probability distributions and confidence intervals (CI), but with an emphasis on their practical application—
+This includes revisiting familiar concepts like probability distributions and confidence intervals (CI), but with an emphasis on their practical application —
 especially in areas like QC and MV. Readers should expect to deepen their understanding of how biostatistics can be used to draw actionable insights
 from the data they encounter daily, enhancing both accuracy and decision-making in lab practices.
 
@@ -51,7 +51,7 @@ This representation can easily be expanded into more advanced statistical concep
 
 ### Probability Distributions
 Understanding probability distributions is fundamental to interpreting data in the laboratory.
-While there are many different types of probability distributions—such as binomial, Poisson, and exponential—
+While there are many different types of probability distributions — such as Binomial, Poisson, and Exponential — 
 the one most commonly encountered in lab work is the normal distribution.
 
 A probability distribution provides a mathematical description of how data points are spread across different possible values.
@@ -130,11 +130,18 @@ the sample mean converges toward the true population mean. This is the strength 
 about the population mean, even with smaller datasets, as long as we can take multiple measurements or replicate the data collection process.
 
 ### Practical Applications of CLT
-+ CLT allows for convergence of almost any distribution, making it a powerful tool for estimating the population mean with a relatively small number of samples.
+The CLT is a powerful statistical tool because it allows for the convergence of almost any distribution, regardless of its original shape,
+towards a normal distribution as the sample size increases. This makes it invaluable in estimating the population mean even when dealing with
+a relatively small number of samples. The beauty of CLT is that it works even when the data we start with isn’t normally distributed — whether it’s skewed,
+bimodal, or spiky—because, with enough independent and identically distributed (i.i.d.) samples, the distribution of the sample mean
+will approximate a normal distribution.
 
 ![](images/cltgrouping.png "Mean of group means converges to population means even with low number of samples")
 
-+ However, improper use of CLT can distort data. For example, CLT can transform a spiky distribution into a normal distribution, potentially leading to misleading analysis.
+However, improper use of the CLT can lead to distorted interpretations of the data. While the CLT can transform any distribution into a normal one,
+this transformation isn’t always beneficial. For example, consider a spiky distribution — one that has sharp peaks and troughs, or is highly skewed.
+Applying CLT to such data might smooth out those features and give us a normal distribution for the sample mean, but this can be misleading.
+The normal distribution that results from CLT may hide important characteristics of the original data, such as outliers or multi-modality (multiple peaks).
 
 ![spikyclt](images/spikyclt.png "CLT can converge almost any distribution")
 
@@ -154,9 +161,9 @@ will capture the true population mean.
 *source: [Wikipedia](https://en.wikipedia.org/wiki/Confidence_interval)*
 
 ### Understanding Confidence Intervals in Frequentist Statistics
-In frequentist statistics, we assume that the population mean is fixed, and it is the data and the resulting confidence intervals that vary
-from one experiment to another. Once an experiment is conducted, the confidence interval is also fixed, and it either contains the true population mean
-or it doesn’t. The interval does not give us a probability that the true mean is within this range; instead, it expresses our confidence
+In frequentist statistics, we assume that the population mean is fixed, and it is the data and the resulting CI that vary from one experiment to another.
+Once an experiment is conducted, the CI is also fixed, and it either contains the true population mean or it doesn’t.
+The interval does not give us a probability that the true mean is within this range; instead, it expresses our confidence
 based on repeated sampling. If we repeated the experiment 100 times, 95 of those intervals would likely include the population mean — this is
 the true interpretation of a 95% CI.
 
@@ -174,7 +181,7 @@ Method Comparison and Lot-to-Lot Verification (LTLV) studies.
 #### Method Comparison Study
 In a Method Comparison Study, the goal is to evaluate whether two analytical methods, Method A and Method B, produce comparable results.
 To do this, we often derive a regression equation that links the results of the two methods. The equation takes the form:
-> Method B=slope×Method A+bias
+> Method B = slope × Method A + bias
 
 ##### Slope Distribution and Proportionality
 The slope in this regression equation tells us whether the two methods are proportional — whether they give similar results across the range of measurements.
