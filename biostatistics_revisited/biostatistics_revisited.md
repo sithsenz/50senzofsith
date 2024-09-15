@@ -1,4 +1,6 @@
 # Biostatistics Revisited: Practical Insights from an MLS
+*Last updated 2024-09-15*
+
 Biostatistics plays a crucial role in medical laboratories, extending far beyond its traditional application in research.
 It is deeply embedded in our everyday operations, from quality control (QC) monitoring to method validation (MV) and routine data analysis.
 This article seeks to revisit key biostatistical concepts through the lens of a Medical Laboratory Scientist (MLS),
@@ -113,6 +115,50 @@ The Central Limit Theorem (CLT) is fundamental to understanding the behavior of 
 the sample mean (𝑥̅) will converge towards the true population mean (µ), and the sample standard deviation (s) will approach the population standard deviation (σ).
 This phenomenon is closely tied to the Law of Large Numbers (LLN), which guarantees that, given enough data points,
 the average of the sample will get closer to the population average.
+
+<table>
+  <th>
+    <td>Population</td>
+    <td>10,000 Samples</td>
+    <td>30 samples</td>
+    <td>6 × 5</td>
+  </th>
+  <tr>
+    <td>Number of Samples</td>
+    <td>∞</td>
+    <td>10,000</td>
+    <td>30</td>
+    <td>30</td>
+  </tr>
+  <tr>
+    <td>Mean</td>
+    <td>0.000</td>
+    <td>-0.006</td>
+    <td>0.028</td>
+    <td>0.007</td>
+  </tr>
+  <tr>
+    <td>Std Dev</td>
+    <td>1.000</td>
+    <td>0.988</td>
+    <td>0.974</td>
+    <td>0.272</td>
+  </tr>
+  <tr>
+    <td>2 SD Range</td>
+    <td>-2.000 - 2.000</td>
+    <td>-1.982 - 1.970</td>
+    <td>-1.920 - 1.975</td>
+    <td>-0.537 - 0.551</td>
+  </tr>
+  <tr>
+    <td>95% CI</td>
+    <td>NA</td>
+    <td>-0.025 - 0.014</td>
+    <td>-0.327 - 0.382</td>
+    <td>-0.260 - 0.273</td>
+  </tr>
+</table>
 
 In simpler terms, the LLN explains that with a large enough sample size, any random fluctuations will "average out",
 and the sample mean will stabilize around the true mean. The CLT builds on this by showing that, regardless of the population’s underlying distribution,
