@@ -4,7 +4,7 @@ title: Measurement Uncertainty
 
 
 # Estimation of Measurement Uncertainty in Qualitative Testing
-*Last updated 2024-09-08
+*Last updated 2024-09-08*
 
 *Measurement uncertainty* (MU) is crucial in ensuring the reliability of test results, particularly in medical laboratories. While the conventional framework, as laid out in JCGM-GUM-3, is well-suited for quantitative testing, its application in qualitative tests (e.g., positive/negative outcomes) presents certain challenges. For this reason, JCGM-GUM-7 offers a more appropriate approach, modeling MU using the principles of probability distribution and Bayesian Probability.
 
