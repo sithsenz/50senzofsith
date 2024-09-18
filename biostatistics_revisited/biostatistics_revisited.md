@@ -1,5 +1,5 @@
 # Biostatistics Revisited: Practical Insights from an MLS
-*Last updated 2024-09-15*
+*Last updated 2024-09-18*
 
 Biostatistics plays a crucial role in medical laboratories, extending far beyond its traditional application in research.
 It is deeply embedded in our everyday operations, from quality control (QC) monitoring to method validation (MV) and routine data analysis.
