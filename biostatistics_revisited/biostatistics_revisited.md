@@ -108,7 +108,7 @@ This is why QC monitoring and LJ charts are such effective tools in the lab. By 
 but in the long run, the aggregated data tends to align with a normal distribution. Understanding this relationship between individual QC data and
 the underlying normal distribution is key to maintaining laboratory accuracy and detecting potential errors.
 
-![lj](images/lj.png "The familiar LJ-Chart")
+![lj](images/lj.gif "The familiar LJ-Chart")
 
 ## Central Limit Theorem
 The Central Limit Theorem (CLT) is fundamental to understanding the behavior of sample means in statistics. It states that as the sample size increases,
