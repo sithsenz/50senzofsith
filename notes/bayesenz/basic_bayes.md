@@ -12,13 +12,19 @@
 >$$P(A) = \sum_i P(A | B_i) \times P(B_i)$$
 
 ## Cookies Problem
+Bowl 1 has 30 chocolate and 10 vanilla cookies. Bowl 2 has 20 chocolate and 20 vanilla cookies.
 
 ```mermaid
+---
+title: Cookies Problem
+---
 flowchart LR
-  bowl---bowl1
-  bowl---bowl2
-  bowl1---choco1(30 chocolate cookies)
-  bowl1---vanila1(10 vanila cookies)
-  bowl2---choco2(20 chocolate cookies)
-  bowl2---vanila2(20 vanila cookies)
+  bowl_1(bowl 1)
+  bowl_2(bowl 2)
+  bowl_1---choco_30(30 chocolate)
+  bowl_1---van_10(10 vanilla)
+  bowl_2---choco_20(20 chocolate)
+  bowl_2---van_20(20 vanilla)
 ```
+
+![venn_cookies](images/venn_cookies.png "Venn's diagram illustrating the Cookies problem")
