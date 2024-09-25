@@ -100,3 +100,37 @@ print(posterior)
 >  </tr>
 ></table>
 
+### Solution: By PyMC (Approximation)
+
+```python
+import pymc as pm
+
+prob_bowl_1: float = 1 / 2
+choco_likeli_bowl_1: float = 30 / 40
+choco_likeli_bowl_2: float = 20 / 40
+
+with pm.Model() as model_choco:
+  # prior
+  bowl_1 = pm.Bernoulli("bowl_1", p=prob_bowl_1)
+  
+  # conditional likelihood
+  choco_likelihood = pm.Deterministic(
+      "choco_likelihood",
+      pm.math.switch(bowl_1, choco_likeli_bowl_1, choco_likeli_bowl_2)
+  )
+
+  # observation
+  pm.Bernoulli("obs", p=choco_likelihood, observed=1)
+  
+  # inference
+  ichoco = pm.sample()
+
+print(az.summary(ichoco, round_to=3, kind="stats"))
+```
+
+|                  | mean  | sd    | hdi_3% | hdi_97% |
+|:----------------:|:-----:|:-----:|:------:|:-------:|
+| bowl_A           | 0.601 | 0.490 | 0.00   | 1.00    |
+| choco_likelihood | 0.650 | 0.122 | 0.50   | 0.75    |
+
+
