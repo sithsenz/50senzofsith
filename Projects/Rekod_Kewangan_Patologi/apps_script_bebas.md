@@ -192,3 +192,103 @@ function cetakPO(bil){
 ```
 
 ## JS Codes Specific to Each .html File
+Each webpage usually starts with reading data from specified range after a successful `DOMContentLoaded` event.
+
+```js
+document.addEventListener('DOMContentLoaded', ()=>{
+  google.script.run.withSuccessHandler(binaJadualLaporan).ambilData("Laporan");
+});
+```
+
+### Presenting Data in Table
+
+```js
+function binaJadualLaporan(d){
+  const badanJadual = ambil("badan-jadual-laporan");
+
+  d.forEach(b => {
+    let baris = buat("tr");
+
+    for (let i=0; i<12; i++){
+      let lajur = buat("td");
+      lajur.textContent = b[i];
+      baris.appendChild(lajur);
+    }
+
+    badanJadual.appendChild(baris);
+  });
+}
+
+
+function buat(e){
+  return document.createElement(e);
+}
+
+
+function ambil(t){
+  return document.getElementById(t);
+}
+```
+
+### Filter Data
+
+```js
+function simpanData(dataDariGoogleSheet){
+  dataPerolehanBarangan = dataDariGoogleSheet;
+  ambil("pusingTunggu").classList.toggle("d-none");
+  ambil("kotakSenaraiBarangan").classList.toggle("d-none");
+}
+
+
+function binaJadualBarangan(){
+  unitTerpilih = ambil("pilihUnit").value;
+  data = dataPerolehanBarangan.filter(d => {return d[2] === unitTerpilih});
+  data.sort();
+
+  const badanJadual = ambil("badan-jadual-barangan");
+  const lajurTerpilih = [1, 3, 4, 5];
+  
+  badanJadual.innerHTML = "";
+
+  data.forEach(b => {
+    let baris = buat("tr");
+
+    for (let i=0; i<4; i++){
+      let lajur = buat("td");
+      lajur.textContent = b[lajurTerpilih[i]];
+      baris.appendChild(lajur);
+    }
+
+    badanJadual.appendChild(baris);
+  });
+}
+```
+
+### Simple Update to Data
+The following code is located in their respective `js-webpage.html` file
+
+```js
+function padankanPO(e){
+  let rujUnit = e.target.dataset.rujUnit;
+  let tarikhPadanan = e.target.previousElementSibling.value;
+  let pRU = unitTerpilih.value;
+  dataPO = [];
+  google.script.run.withSuccessHandler((e)=>{simpanData(e, pRU);}).kemaskiniPadanan(rujUnit, tarikhPadanan);
+  suisPaparan(1000);
+}
+```
+
+The corresponding code is located in the `Code.gs` file.
+
+```js
+function kemaskiniPadanan(rujUnit, tarikhPadanan){
+  const hamparan = SpreadsheetApp.openById("spreadsheet ID");
+  const lembaran = hamparan.getSheetByName("PO");
+  const dataRujUnit = lembaran.getRange(2, 1, lembaran.getLastRow() - 1, 1).getValues().map((r)=>r[0]);
+  let baris = dataRujUnit.indexOf(rujUnit) + 2;
+  lembaran.getRange(baris, 11).setValue("Bersih");
+  lembaran.getRange(baris, 10).setValue(tarikhPadanan);
+  return ambilData("PO");
+}
+```
+
