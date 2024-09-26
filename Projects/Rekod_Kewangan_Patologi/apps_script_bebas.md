@@ -25,7 +25,6 @@ function binaLaman(namaFail, lampiran){
 ```
 
 ### Routes to Each Webpage
-These 2 functions have to go hand in hand.
 
 ```js
 const Alamat = {
@@ -51,7 +50,16 @@ function doGet(e){
 }
 ```
 
-## Create New Data
+### Loading Page
+Each webpage usually starts with reading data from specified range after a successful `DOMContentLoaded` event.
+
+```js
+document.addEventListener('DOMContentLoaded', ()=>{
+  google.script.run.withSuccessHandler(binaJadualLaporan).ambilData("Laporan");
+});
+```
+
+# Create New Data
 
 ```js
 function tambahPObaru(dataPO, dataTerperinci){
@@ -70,7 +78,116 @@ function tambahPObaru(dataPO, dataTerperinci){
 }
 ```
 
-## Read Data
+## New Entry Form
+
+```js
+function simpanPilihan(dataDariGoogleSheet, dataPertama){
+  if (dataPertama === "dataPilihanRujUnit"){
+    dataPilihanRujUnit = dataDariGoogleSheet.dataLemb1;
+    dataPilihanJenisPerolehan = dataDariGoogleSheet.dataLemb2;
+    binaSenaraiPilihan("senaraiRujUnit", dataPilihanRujUnit);
+    binaSenaraiPilihan("senaraiJenisPerolehan", dataPilihanJenisPerolehan);
+  } else if (dataPertama === "dataPilihanKodAgihan"){
+    dataPilihanKodAgihan = dataDariGoogleSheet.dataLemb1;
+    dataPilihanBarangan = dataDariGoogleSheet.dataLemb2;
+    binaSenaraiPilihan("kodAgihan", dataPilihanKodAgihan);
+    binaSenaraiPilihan("senaraiBaranganBaru", dataPilihanBarangan);
+  } else {
+    dataPilihanPembekal = dataDariGoogleSheet;
+    binaSenaraiPilihan("senaraiPembekal1", dataPilihanPembekal);
+    binaSenaraiPilihan("senaraiPembekal2", dataPilihanPembekal);
+    binaSenaraiPilihan("senaraiPembekal3", dataPilihanPembekal);
+  }
+}
+
+
+function binaSenaraiPilihan(idSenarai, data){
+  const senarai = ambil(idSenarai);
+
+  while (senarai.hasChildNodes()){
+    senarai.removeChild(senarai.firstChild);
+  }
+  data.forEach(barisDalamData => {
+    let pilihan = buat("option");
+    pilihan.textContent = barisDalamData[0];
+    senarai.appendChild(pilihan);
+  });
+}
+```
+
+## New Data Manipulation
+
+```js
+function tambahBaris(){
+  let mesej = "";
+  let badanJadual = ambil("badan-jadual-baru");
+  let templat = ambil("templat-jadual").content;
+  let barang = ambil("mintaBarangBaru");
+  let kuantiti = ambil("mintaKuantitiBaru");
+  let harga = ambil("mintaHargaBaru");
+
+  mesej = kuantiti.validity.patternMismatch ? mesej + "Format kuantiti tidak sah. " : mesej;
+  mesej = harga.validity.patternMismatch ? mesej + "Format harga tidak sah. " : mesej;
+
+  if (mesej.length > 0){
+    const kotakMesejPengesahanData = ambil("kotakMesejPengesahanData");
+    const kotakMesej = bootstrap.Toast.getOrCreateInstance(kotakMesejPengesahanData);
+    ambil("mesejPengesahanData").textContent = mesej;
+    kotakMesej.show();
+  } else {
+    let barisBaru = templat.cloneNode(true);
+    let barangBaru = barisBaru.querySelector(".dataBarangan");
+    let kuantitiBaru = barisBaru.querySelector(".dataKuantiti") ;
+    let hargaBaru = barisBaru.querySelector(".dataHargaSeunit");
+
+    barangBaru.textContent = barang.value;
+    kuantitiBaru.textContent = kuantiti.value;
+    hargaBaru.textContent = harga.value;
+
+    badanJadual.appendChild(barisBaru);
+
+    barang.value = "";
+    kuantiti.value = "";
+    harga.value = "";
+
+    let bilJadual = document.querySelectorAll(".dataBil");
+    bilJadual.forEach(b => {b.textContent = b.parentNode.rowIndex});
+    
+    jumlahkanBaris();
+  }
+}
+
+
+function padamkanBaris(butang){
+  let barisIni = butang.parentNode.parentNode;
+  let jadualIni = barisIni.parentNode.parentNode;
+  jadualIni.deleteRow(barisIni.rowIndex);
+
+  let bilJadual = document.querySelectorAll(".dataBil");
+  bilJadual.forEach(b => {b.textContent = b.parentNode.rowIndex});
+    
+  jumlahkanBaris();
+}
+
+
+function jumlahkanBaris(){
+  const badanJadual = ambil("badan-jadual-baru");
+  const jumBaris = badanJadual.rows.length;
+  let jumKeseluruhan = 0;
+
+  for (let i=0; i<jumBaris; i++){
+    let kuantitiBaris = badanJadual.rows[i].cells[2].textContent;
+    let hargaBaris = badanJadual.rows[i].cells[3].textContent * 100;
+    let jumlahSebaris = kuantitiBaris * hargaBaris / 100;
+    badanJadual.rows[i].cells[4].textContent = jumlahSebaris.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    jumKeseluruhan += jumlahSebaris;
+  }
+
+  ambil("jumlahKeseluruhan").textContent = jumKeseluruhan.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+```
+
+# Read Data
 
 ```js
 function ambilData(lemb1, lokasi1, lemb2, lokasi2){
@@ -94,7 +211,107 @@ function ambilData(lemb1, lokasi1, lemb2, lokasi2){
 }
 ```
 
-## Update Data
+## Presenting Data in Table
+
+```js
+function binaJadualLaporan(d){
+  const badanJadual = ambil("badan-jadual-laporan");
+
+  d.forEach(b => {
+    let baris = buat("tr");
+
+    for (let i=0; i<12; i++){
+      let lajur = buat("td");
+      lajur.textContent = b[i];
+      baris.appendChild(lajur);
+    }
+
+    badanJadual.appendChild(baris);
+  });
+}
+
+
+function buat(e){
+  return document.createElement(e);
+}
+
+
+function ambil(t){
+  return document.getElementById(t);
+}
+```
+
+## Filter Data
+
+```js
+function simpanData(dataDariGoogleSheet){
+  dataPerolehanBarangan = dataDariGoogleSheet;
+  ambil("pusingTunggu").classList.toggle("d-none");
+  ambil("kotakSenaraiBarangan").classList.toggle("d-none");
+}
+
+
+function binaJadualBarangan(){
+  unitTerpilih = ambil("pilihUnit").value;
+  data = dataPerolehanBarangan.filter(d => {return d[2] === unitTerpilih});
+  data.sort();
+
+  const badanJadual = ambil("badan-jadual-barangan");
+  const lajurTerpilih = [1, 3, 4, 5];
+  
+  badanJadual.innerHTML = "";
+
+  data.forEach(b => {
+    let baris = buat("tr");
+
+    for (let i=0; i<4; i++){
+      let lajur = buat("td");
+      lajur.textContent = b[lajurTerpilih[i]];
+      baris.appendChild(lajur);
+    }
+
+    badanJadual.appendChild(baris);
+  });
+}
+```
+
+Some webpage has a more detailed filter in place:
+
+```js
+function binaJadualPO(praRujUnit){
+  const badanJadual = ambil("badan-jadual-po");
+
+  badanJadual.innerHTML = "";
+
+  let dataPOtertapis = dataPO.filter((data)=>{return data[0].startsWith(praRujUnit);});
+
+  let templat = ambil("templatJadual").content;
+
+  dataPOtertapis.forEach(b => {
+    let baris = templat.cloneNode(true);
+    let rujUnit = baris.querySelector(".rujUnit");
+    let pembekal1 = baris.querySelector(".pembekal1");
+    let jumlahPO = baris.querySelector(".jumlahPO");
+    let nomborPO = baris.querySelector(".nomborPO");
+    let statusPadanan = baris.querySelector(".statusPadanan");
+    let teruskan = baris.querySelector(".butangTeruskan");
+    let padanan = baris.querySelector(".butangPadanan");
+
+    rujUnit.textContent = b[0];
+    teruskan.dataset.rujUnit = b[0];
+    pembekal1.textContent = b[3];
+    jumlahPO.textContent = b[6];
+    nomborPO.textContent = b[7];
+    statusPadanan.textContent = b[10];
+  
+    teruskan.addEventListener("click", (e)=>{padankanPO(e);});
+    padanan.addEventListener("click", (e)=>{paparkanButang(e);});
+    badanJadual.appendChild(baris);
+  });
+}
+```
+
+# Update Data
 
 ```js
 function kemaskiniPadanan(rujUnit, tarikhPadanan){
@@ -108,7 +325,35 @@ function kemaskiniPadanan(rujUnit, tarikhPadanan){
 }
 ```
 
-## Delete Data
+## Simple Update to Data
+The following code is located in their respective `js-webpage.html` file
+
+```js
+function padankanPO(e){
+  let rujUnit = e.target.dataset.rujUnit;
+  let tarikhPadanan = e.target.previousElementSibling.value;
+  let pRU = unitTerpilih.value;
+  dataPO = [];
+  google.script.run.withSuccessHandler((e)=>{simpanData(e, pRU);}).kemaskiniPadanan(rujUnit, tarikhPadanan);
+  suisPaparan(1000);
+}
+```
+
+The corresponding code is located in the `Code.gs` file.
+
+```js
+function kemaskiniPadanan(rujUnit, tarikhPadanan){
+  const hamparan = SpreadsheetApp.openById("spreadsheet ID");
+  const lembaran = hamparan.getSheetByName("PO");
+  const dataRujUnit = lembaran.getRange(2, 1, lembaran.getLastRow() - 1, 1).getValues().map((r)=>r[0]);
+  let baris = dataRujUnit.indexOf(rujUnit) + 2;
+  lembaran.getRange(baris, 11).setValue("Bersih");
+  lembaran.getRange(baris, 10).setValue(tarikhPadanan);
+  return ambilData("PO");
+}
+```
+
+# Delete Data
 
 ```js
 function padamRekod(bil, seterusnya){
@@ -147,7 +392,7 @@ function padamRekod(bil, seterusnya){
 }
 ```
 
-## Save Data as .pdf
+# Save Data as .pdf
 
 ```js
 function cetakPO(bil){
@@ -191,104 +436,4 @@ function cetakPO(bil){
 }
 ```
 
-## JS Codes Specific to Each .html File
-Each webpage usually starts with reading data from specified range after a successful `DOMContentLoaded` event.
-
-```js
-document.addEventListener('DOMContentLoaded', ()=>{
-  google.script.run.withSuccessHandler(binaJadualLaporan).ambilData("Laporan");
-});
-```
-
-### Presenting Data in Table
-
-```js
-function binaJadualLaporan(d){
-  const badanJadual = ambil("badan-jadual-laporan");
-
-  d.forEach(b => {
-    let baris = buat("tr");
-
-    for (let i=0; i<12; i++){
-      let lajur = buat("td");
-      lajur.textContent = b[i];
-      baris.appendChild(lajur);
-    }
-
-    badanJadual.appendChild(baris);
-  });
-}
-
-
-function buat(e){
-  return document.createElement(e);
-}
-
-
-function ambil(t){
-  return document.getElementById(t);
-}
-```
-
-### Filter Data
-
-```js
-function simpanData(dataDariGoogleSheet){
-  dataPerolehanBarangan = dataDariGoogleSheet;
-  ambil("pusingTunggu").classList.toggle("d-none");
-  ambil("kotakSenaraiBarangan").classList.toggle("d-none");
-}
-
-
-function binaJadualBarangan(){
-  unitTerpilih = ambil("pilihUnit").value;
-  data = dataPerolehanBarangan.filter(d => {return d[2] === unitTerpilih});
-  data.sort();
-
-  const badanJadual = ambil("badan-jadual-barangan");
-  const lajurTerpilih = [1, 3, 4, 5];
-  
-  badanJadual.innerHTML = "";
-
-  data.forEach(b => {
-    let baris = buat("tr");
-
-    for (let i=0; i<4; i++){
-      let lajur = buat("td");
-      lajur.textContent = b[lajurTerpilih[i]];
-      baris.appendChild(lajur);
-    }
-
-    badanJadual.appendChild(baris);
-  });
-}
-```
-
-### Simple Update to Data
-The following code is located in their respective `js-webpage.html` file
-
-```js
-function padankanPO(e){
-  let rujUnit = e.target.dataset.rujUnit;
-  let tarikhPadanan = e.target.previousElementSibling.value;
-  let pRU = unitTerpilih.value;
-  dataPO = [];
-  google.script.run.withSuccessHandler((e)=>{simpanData(e, pRU);}).kemaskiniPadanan(rujUnit, tarikhPadanan);
-  suisPaparan(1000);
-}
-```
-
-The corresponding code is located in the `Code.gs` file.
-
-```js
-function kemaskiniPadanan(rujUnit, tarikhPadanan){
-  const hamparan = SpreadsheetApp.openById("spreadsheet ID");
-  const lembaran = hamparan.getSheetByName("PO");
-  const dataRujUnit = lembaran.getRange(2, 1, lembaran.getLastRow() - 1, 1).getValues().map((r)=>r[0]);
-  let baris = dataRujUnit.indexOf(rujUnit) + 2;
-  lembaran.getRange(baris, 11).setValue("Bersih");
-  lembaran.getRange(baris, 10).setValue(tarikhPadanan);
-  return ambilData("PO");
-}
-```
 
