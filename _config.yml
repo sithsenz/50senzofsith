@@ -2,8 +2,6 @@ title: 50 Senz of Sith
 
 theme: jekyll-theme-slate
 
-mermaid: true
-
 markdown: kramdown
 kramdown:
     math_engine: katex
