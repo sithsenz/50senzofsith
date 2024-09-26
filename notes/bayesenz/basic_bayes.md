@@ -21,16 +21,6 @@ The Cookies Problem is a well-known Bayesian puzzle designed to show how Bayes�
 The goal is to determine the probability that a chocolate cookie came from Bowl 1, given that a chocolate cookie was selected.
 $$P(\text{bowl}_1 | \text{cookies}_c)$$
 
-```mermaid
-flowchart LR
-  bowl_1(bowl 1)
-  bowl_2(bowl 2)
-  bowl_1---choco_30(30 chocolate)
-  bowl_1---van_10(10 vanilla)
-  bowl_2---choco_20(20 chocolate)
-  bowl_2---van_20(20 vanilla)
-```
-
 ### Solution: By Diagram
 ![venn_cookies](images/venn_cookies.png "Venn's diagram illustrating the Cookies problem")
 
@@ -45,7 +35,7 @@ This quick method gives a straightforward answer, but it assumes that we already
 To arrive at the same answer using Bayes' Theorem:
 >$$P(\text{bowl}_1 | \text{cookies}_c) = \frac{P(\text{cookies}_c | \text{bowl}_1) \times P(\text{bowl}_1)}{P(\text{cookies}_c)}$$
 
-We calculate the likelihood that a chocolate cookie came from Bowl 1 as $$P(\text{cookies}_c ∣ \text{bowl}_1) = \frac{30}{30+10}$$​, the prior probability that the cookie came from Bowl 1 as $P(\text{bowl}_1) = \frac{1}{2}$, and the marginal probability of selecting a chocolate cookie from either bowl $P(\text{cookies}_c)$ as a weighted sum of the probabilities of choosing a chocolate cookie from each bowl.
+We calculate the likelihood that a chocolate cookie came from Bowl 1, the prior probability that the cookie came from Bowl 1, and the marginal probability of selecting a chocolate cookie from either bowl as a weighted sum of the probabilities of choosing a chocolate cookie from each bowl.
 
 Thus:
 >$$P(\text{bowl}_1 | \text{cookies}_c) = \frac{\frac{30}{30 + 10} \times \frac{1}{2}}{\frac{30}{30 + 10} \times \frac{1}{2} + \frac{20}{20 + 20} \times \frac{1}{2}} = \frac{3}{5}$$
@@ -67,8 +57,8 @@ print(p_b1_c)
 
 ### Solution: By Bayes Table
 In this approach, we construct a Bayes table, which is another useful method to solve Bayesian problems systematically.
-1. First list the priors: the initial probability of each bowl, $$\frac{1}{2}$$​ for both.
-2. Then, add the likelihoods: the probability of drawing a chocolate cookie from each bowl. For Bowl 1, it's $$\frac{30}{40}$$​, and for Bowl 2, it's $$\frac{20}{40}$​$.
+1. First list the priors: the initial probability of each bowl.
+2. Then, add the likelihoods: the probability of drawing a chocolate cookie from each bowl.
 3. The numerator for each row is the product of the prior and the likelihood.
 4. Normalize by dividing by the sum of the numerators, which gives the posterior probabilities.
 
