@@ -45,7 +45,7 @@ This quick method gives a straightforward answer, but it assumes that we already
 To arrive at the same answer using Bayes' Theorem:
 >$$P(\text{bowl}_1 | \text{cookies}_c) = \frac{P(\text{cookies}_c | \text{bowl}_1) \times P(\text{bowl}_1)}{P(\text{cookies}_c)}$$
 
-We calculate the likelihood that a chocolate cookie came from Bowl 1 as $$P(\text{cookies}_c ∣ \text{bowl}_1) = \frac{30}{30+10}$$​, the prior probability that the cookie came from Bowl 1 as $$P(\text{bowl}_1) = \frac{1}{2}$​$, and the marginal probability of selecting a chocolate cookie from either bowl $$P(\text{cookies}_c)$$ as a weighted sum of the probabilities of choosing a chocolate cookie from each bowl.
+We calculate the likelihood that a chocolate cookie came from Bowl 1 as $$P(\text{cookies}_c ∣ \text{bowl}_1) = \frac{30}{30+10}$$​, the prior probability that the cookie came from Bowl 1 as $P(\text{bowl}_1) = \frac{1}{2}$, and the marginal probability of selecting a chocolate cookie from either bowl $P(\text{cookies}_c)$ as a weighted sum of the probabilities of choosing a chocolate cookie from each bowl.
 
 Thus:
 >$$P(\text{bowl}_1 | \text{cookies}_c) = \frac{\frac{30}{30 + 10} \times \frac{1}{2}}{\frac{30}{30 + 10} \times \frac{1}{2} + \frac{20}{20 + 20} \times \frac{1}{2}} = \frac{3}{5}$$
