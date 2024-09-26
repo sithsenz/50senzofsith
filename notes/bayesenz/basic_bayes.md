@@ -12,19 +12,16 @@ This is Bayes' Theorem, which is essential in Bayesian inference. It shows how t
 >$$P(A | B) = \frac{P(B | A) \times P(A)}{P(B)}$$
 
 ### Theorem 3 (Law of Total Probability)
-This theorem helps in computing the overall probability of A by considering all possible events $B_i$​ that could lead to A. Each $B_i$​ represents a different scenario, and their probabilities are weighted by how likely they are.
+This theorem helps in computing the overall probability of A by considering all possible events $$B_i$$​ that could lead to A. Each $$B_i$$​ represents a different scenario, and their probabilities are weighted by how likely they are.
 >$$P(A) = \sum_i P(A | B_i) \times P(B_i)$$
 
 ## Cookies Problem
 The Cookies Problem is a well-known Bayesian puzzle designed to show how Bayes’ Theorem works in practice. In this problem, we have two bowls with different proportions of chocolate and vanilla cookies. Bowl 1 contains 30 chocolate cookies and 10 vanilla cookies, while Bowl 2 contains 20 chocolate cookies and 20 vanilla cookies.
 
 The goal is to determine the probability that a chocolate cookie came from Bowl 1, given that a chocolate cookie was selected.
-$P(\text{bowl}_1 | \text{cookies}_c)$
+$$P(\text{bowl}_1 | \text{cookies}_c)$$
 
 ```mermaid
----
-title: Cookies Problem
----
 flowchart LR
   bowl_1(bowl 1)
   bowl_2(bowl 2)
@@ -48,7 +45,7 @@ This quick method gives a straightforward answer, but it assumes that we already
 To arrive at the same answer using Bayes' Theorem:
 >$$P(\text{bowl}_1 | \text{cookies}_c) = \frac{P(\text{cookies}_c | \text{bowl}_1) \times P(\text{bowl}_1)}{P(\text{cookies}_c)}$$
 
-We calculate the likelihood that a chocolate cookie came from Bowl 1 as $P(\text{cookies}_c ∣ \text{bowl}_1) = \frac{30}{30+10}$​, the prior probability that the cookie came from Bowl 1 as $P(\text{bowl}_1) = \frac{1}{2}$​, and the marginal probability of selecting a chocolate cookie from either bowl $P(\text{cookies}_c)$ as a weighted sum of the probabilities of choosing a chocolate cookie from each bowl.
+We calculate the likelihood that a chocolate cookie came from Bowl 1 as $$P(\text{cookies}_c ∣ \text{bowl}_1) = \frac{30}{30+10}$$​, the prior probability that the cookie came from Bowl 1 as $$P(\text{bowl}_1) = \frac{1}{2}$​$, and the marginal probability of selecting a chocolate cookie from either bowl $$P(\text{cookies}_c)$$ as a weighted sum of the probabilities of choosing a chocolate cookie from each bowl.
 
 Thus:
 >$$P(\text{bowl}_1 | \text{cookies}_c) = \frac{\frac{30}{30 + 10} \times \frac{1}{2}}{\frac{30}{30 + 10} \times \frac{1}{2} + \frac{20}{20 + 20} \times \frac{1}{2}} = \frac{3}{5}$$
@@ -70,8 +67,8 @@ print(p_b1_c)
 
 ### Solution: By Bayes Table
 In this approach, we construct a Bayes table, which is another useful method to solve Bayesian problems systematically.
-1. First list the priors: the initial probability of each bowl, $\frac{1}{2}$​ for both.
-2. Then, add the likelihoods: the probability of drawing a chocolate cookie from each bowl. For Bowl 1, it's $\frac{30}{40}$​, and for Bowl 2, it's $\frac{20}{40}$​.
+1. First list the priors: the initial probability of each bowl, $$\frac{1}{2}$$​ for both.
+2. Then, add the likelihoods: the probability of drawing a chocolate cookie from each bowl. For Bowl 1, it's $$\frac{30}{40}$$​, and for Bowl 2, it's $$\frac{20}{40}$​$.
 3. The numerator for each row is the product of the prior and the likelihood.
 4. Normalize by dividing by the sum of the numerators, which gives the posterior probabilities.
 
@@ -99,7 +96,7 @@ print(bayes_table)
 >|0| bowl 1 | 1/2   | 3/4        | 3/8       | 3/5       |
 >|1| bowl 2 | 1/2   | 1/2        | 1/4       | 2/5       |
 
-The table shows the posterior probabilities as $\frac{3}{5}$ for Bowl 1 and $\frac{2}{5}$ for Bowl 2, confirming the previous calculations.
+The table shows the posterior probabilities as $$\frac{3}{5}$$ for Bowl 1 and $$\frac{2}{5}$$ for Bowl 2, confirming the previous calculations.
 
 ### Solution: By empiricaldist.Pmf
 The `empiricaldist` Python library is another method that we could use. Here, we create a prior distribution (which assumes both bowls are equally likely) and multiply it by the likelihood of selecting a chocolate cookie from each bowl. After normalizing the results, we get the same posterior probabilities: 60% (0.6) for Bowl 1 and 40% (0.4) for Bowl 2.
@@ -185,4 +182,4 @@ This article provides a clear, structured approach to understanding Bayesian inf
 + Martin Osvaldo A, Bayesian Analysis with Python. Packt Publishing. 2024. ISBN 978-1-80512-716-1
 + [Think Bayes 2](http://allendowney.github.io/ThinkBayes2/index.html)
 
-*[Table of Content](../index.md)*
+*[Table of Content](../../index.md)*
