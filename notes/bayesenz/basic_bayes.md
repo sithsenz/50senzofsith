@@ -122,6 +122,7 @@ We also see how to use PyMC, a probabilistic programming framework, to solve the
 3. Using Monte Carlo sampling, simulate the posterior probability distribution.
 
 ```python
+import arviz as az
 import pymc as pm
 
 prob_bowl_1: float = 1 / 2
@@ -153,6 +154,56 @@ print(az.summary(ichoco, round_to=3, kind="stats"))
 | choco_likelihood | 0.650 | 0.122 | 0.50   | 0.75    |
 
 The results give a posterior of around 0.601 for Bowl 1, which closely matches the analytical solution.
+
+The `switch` method used in this approach is an efficient and straightforward solution for problems with a limited number of categories, such as the two-bowl scenario in this case. It excels in handling such problems directly and is commonly used for simpler models. However, if the problem were extended to include more than two bowls or more complex conditions, the `switch` method could become less ideal, as managing multiple nested conditions might reduce readability and scalability.
+
+### Solution: By PyMC (Alternate Solution)
+
+The alternate PyMC solution introduces a cleaner and more scalable approach, particularly useful when the problem is extended to more than two bowls. This solution leverages PyMC’s `Categorical` distribution to represent multiple possible bowls, making the code more readable and easier to extend to problems with more than two categories.
+
+1. Define a categorical prior distribution: Instead of a binary outcome (Bowl 1 or Bowl 2), we use a categorical distribution, allowing for more bowls in the future.
+2. Set up the likelihood: The likelihood for each bowl is calculated using logical conditions that scale easily with more bowls.
+3. Inference: Similar to the first PyMC solution, we use Monte Carlo sampling to estimate the posterior probabilities.
+
+```python
+import numpy as np
+import pymc as pm
+
+
+# bowl[0] == bowl 1, bowl[1] == bowl 2
+prior_bowl: list = [1/2, 1/2]
+choco_likeli_by_bowl: list = [30/40, 20/40]
+
+
+with pm.Model() as alternate_model:
+  # prior
+  bowl = pm.Categorical("bowl", p=prior_bowl)
+
+  # likelihood
+  choco_likelihood = pm.Deterministic(
+    "choco_likelihood",
+    pm.math.eq(bowl, 0) * choco_likeli_by_bowl[0] +
+    pm.math.eq(bowl, 1) * choco_likeli_by_bowl[1]
+  )
+
+  # observation
+  pm.Bernoulli("obs", p=choco_likelihood, observed=1)
+
+  # inference
+  ialternate = pm.sample()
+
+
+prob_bowl_if_bowl = ialternate.posterior.bowl.values
+print(np.mean(prob_bowl_if_bowl == 0), np.mean(prob_bowl_if_bowl == 1))
+```
+
+>0.598 0.402 
+
+This solution provides almost the same result as the first PyMC solution, but it is structured in a way that can handle more than two bowls without becoming overly complicated. Instead of using a nested switch statement, this approach uses PyMC’s Categorical distribution to manage multiple categories cleanly.
+
+In the first PyMC solution, `az.summary` was used to summarize the posterior distribution, which works well because it presents numerical results for continuous variables like the posterior probability of each bowl. However, in the second PyMC solution, the problem involves categorical variables (representing which bowl the cookie came from), and taking the mean of such categories could be misleading.
+
+Therefore, instead of using `az.summary`, which is suitable for continuous variables, the alternate PyMC solution uses `np.mean` by directly specifying the value of the bowl. This method accurately reflects the proportion of times the model inferred each bowl, providing a clearer and more meaningful interpretation of the categorical results.
 
 The PyMC approach is beneficial when exact formulas become difficult to apply or when working with more complex models. It allows for Bayesian inference through simulations, offering an approximate but powerful solution.
 
