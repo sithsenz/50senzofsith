@@ -122,6 +122,7 @@ We also see how to use PyMC, a probabilistic programming framework, to solve the
 3. Using Monte Carlo sampling, simulate the posterior probability distribution.
 
 ```python
+import arviz as az
 import pymc as pm
 
 prob_bowl_1: float = 1 / 2
@@ -155,6 +156,41 @@ print(az.summary(ichoco, round_to=3, kind="stats"))
 The results give a posterior of around 0.601 for Bowl 1, which closely matches the analytical solution.
 
 The PyMC approach is beneficial when exact formulas become difficult to apply or when working with more complex models. It allows for Bayesian inference through simulations, offering an approximate but powerful solution.
+
+### Solution: By PyMC (Alternate Solution)
+
+```python
+import numpy as np
+import pymc as pm
+
+
+prior_bowl: list = [1/2, 1/2]
+choco_likeli_by_bowl: list = [30/40, 20/40]
+
+
+with pm.Model() as alternate_model:
+  # prior
+  bowl = pm.Categorical("bowl", p=prior_bowl)  # bowl[0] == bowl 1, bowl[1] == bowl 2
+
+  # likelihood
+  choco_likelihood = pm.Deterministic(
+    "choco_likelihood",
+    pm.math.eq(bowl, 0) * choco_likeli_by_bowl[0] +
+    pm.math.eq(bowl, 1) * choco_likeli_by_bowl[1]
+  )
+
+  # observation
+  pm.Bernoulli("obs", p=choco_likelihood, observed=1)
+
+  # inference
+  ialternate = pm.sample()
+
+
+prob_bowl_if_bowl = ialternate.posterior.bowl.values
+print(np.mean(prob_bowl_if_bowl == 0), np.mean(prob_bowl_if_bowl == 1))
+```
+
+>0.598 0.402 
 
 ## Summary of Methods
 + Diagram: A quick visual approach, useful for small problems.
