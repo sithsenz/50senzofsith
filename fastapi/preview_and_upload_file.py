@@ -15,7 +15,7 @@ Dalam venv yang berkaitan, buka file ini dengan arahan berikut di cmd:
 Masukkan alamat berikut di pelayar:
   192.168.112.103:8655/
 
-Templat HTML disimpan dalam folder templat
+Templat HTML utama.html disimpan dalam folder templat
 
 Skrip ini akan memaparkan senarai nama-nama file dalam folder files berserta pautannya
 
