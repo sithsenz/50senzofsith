@@ -1,4 +1,5 @@
 # FastAPI
+*Last updated 2024-10-08*
 
 ## Getting Started: Installing FastAPI
 FastAPI is a modern, fast (high-performance) web framework for building APIs with Python, based on standard Python type hints. To begin using FastAPI, follow the steps below for installation. Before installing FastAPI, it’s a good practice to set up a virtual environment. This ensures that your project dependencies are isolated from your global Python installation. The simplest way to install everything you need is by using the fastapi[all] option, which also includes uvicorn (the server that will run your application) and other important packages:
@@ -238,3 +239,5 @@ Here’s the corresponding HTML template that displays the list of uploaded file
 
 ### Dynamic Routing in Action
 With this setup, users can visit the root page to see a list of uploaded files. Each file is a clickable link that takes them to the corresponding URL to either preview or download the file. This demonstrates how path parameters allow you to build dynamic routes in FastAPI that respond to user input or other variables in the URL.
+
+*[Table of Content](../index.md)*
