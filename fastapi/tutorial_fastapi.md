@@ -234,7 +234,7 @@ Here’s the corresponding HTML template that displays the list of uploaded file
 ```
 
 ### Explanation:
-+ `{% for f in files %}`: This Jinja2 template code loops through the list of filenames passed to the template and generates a clickable link for each file
++ `{% for f in files %}`...`{% endfor %}`: This Jinja2 template code loops through the list of filenames passed to the template and generates a clickable link for each file
 + `{{ url_for('preview_file', file_name=f) }}`: The `url_for()` function dynamically creates the URL for the `preview_file` route by inserting the filename as a path parameter
 
 ### Dynamic Routing in Action
