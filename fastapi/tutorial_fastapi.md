@@ -1,5 +1,5 @@
 # FastAPI
-*Last updated 2024-10-08*
+*Last updated 2024-10-09*
 
 ## Getting Started: Installing FastAPI
 FastAPI is a modern, fast (high-performance) web framework for building APIs with Python, based on standard Python type hints. To begin using FastAPI, follow the steps below for installation. Before installing FastAPI, it’s a good practice to set up a virtual environment. This ensures that your project dependencies are isolated from your global Python installation. The simplest way to install everything you need is by using the fastapi[all] option, which also includes uvicorn (the server that will run your application) and other important packages:
@@ -123,7 +123,7 @@ You can create a corresponding `home.html` file inside the `templates` folder:
 
 ### Explanation:
 + `{{ dict_obj["key01"] }}`: This expression displays the value associated with `key01` in the dictionary passed to the template
-+ `{% for item in list_obj %}`: This loops through the list `list_obj` and generates a list item `<li>` for each element
++ `{% for item in list_obj %}`...`{% endfor %}`: This loops through the list `list_obj` and generates a list item `<li>` for each element
 
 ### Combining Data and HTML Templates
 This integration of data and HTML allows you to build interactive web pages with dynamic content based on the data your API serves. Whether it's simple text responses or complex HTML pages, FastAPI makes handling GET requests straightforward and efficient.
