@@ -106,6 +106,7 @@ async def home(request: Request):
 You can create a corresponding `home.html` file inside the `templates` folder:
 
 ```html
+{% raw %}
 <body>
 
   <!--variables-->
@@ -113,19 +114,18 @@ You can create a corresponding `home.html` file inside the `templates` folder:
 
   <!--expression-->
   <ul>
-  {% raw %}
-  {% for item in list_obj %}
+    {% for item in list_obj %}
     <li>item</li>
-  {% endfor %}
-  {% endraw %}
+    {% endfor %}
   </ul>
 
 </body>
+{% endraw %}
 ```
 
 ### Explanation:
-+ `{{ dict_obj["key01"] }}`: This expression displays the value associated with `key01` in the dictionary passed to the template
-+ `{% for item in list_obj %}`...`{% endfor %}`: This loops through the list `list_obj` and generates a list item `<li>` for each element
++ {% raw %}`{{ dict_obj["key01"] }}`{% endraw %}: This expression displays the value associated with `key01` in the dictionary passed to the template
++ {% raw %}`{% for item in list_obj %}`{% endraw %}: This loops through the list `list_obj` and generates a list item `<li>` for each element
 
 ### Combining Data and HTML Templates
 This integration of data and HTML allows you to build interactive web pages with dynamic content based on the data your API serves. Whether it's simple text responses or complex HTML pages, FastAPI makes handling GET requests straightforward and efficient.
@@ -165,12 +165,14 @@ async def upload_file(files: List[UploadFile]):
 To allow users to upload files, you need an HTML form that lets them select files and submit them to the `/files/upload/` endpoint:
 
 ```html
+{% raw %}
 <body>
   <form method="post" action="/file/upload/" enctype="multipart/form-data">
     <input name="files" type="file" multiple>
     <input type="submit">
   </form>
 </body>
+{% endraw %}
 ```
 
 ### Explanation:
@@ -226,6 +228,7 @@ async def preview_file(file_name: str):
 Here’s the corresponding HTML template that displays the list of uploaded files as clickable links:
 
 ```html
+{% raw %}
 <body>
   <ul>
     {% for f in files %}
@@ -233,11 +236,12 @@ Here’s the corresponding HTML template that displays the list of uploaded file
     {% endfor %}
   </ul>
 </body>
+{% endraw %}
 ```
 
 ### Explanation:
-+ `{% for f in files %}`...`{% endfor %}`: This Jinja2 template code loops through the list of filenames passed to the template and generates a clickable link for each file
-+ `{{ url_for('preview_file', file_name=f) }}`: The `url_for()` function dynamically creates the URL for the `preview_file` route by inserting the filename as a path parameter
++ {% raw %}`{% for f in files %}`{% endraw %}: This Jinja2 template code loops through the list of filenames passed to the template and generates a clickable link for each file
++ {% raw %}`{{ url_for('preview_file', file_name=f) }}`{% endraw %}: The `url_for()` function dynamically creates the URL for the `preview_file` route by inserting the filename as a path parameter
 
 ### Dynamic Routing in Action
 With this setup, users can visit the root page to see a list of uploaded files. Each file is a clickable link that takes them to the corresponding URL to either preview or download the file. This demonstrates how path parameters allow you to build dynamic routes in FastAPI that respond to user input or other variables in the URL.
