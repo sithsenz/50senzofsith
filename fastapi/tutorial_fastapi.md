@@ -113,9 +113,11 @@ You can create a corresponding `home.html` file inside the `templates` folder:
 
   <!--expression-->
   <ul>
+  {% raw %}
   {% for item in list_obj %}
     <li>item</li>
   {% endfor %}
+  {% endraw %}
   </ul>
 
 </body>
