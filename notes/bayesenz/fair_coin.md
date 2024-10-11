@@ -21,6 +21,7 @@ hence,
 > $$P(\text{head | (H,T)}) = \frac{p \times h^H \times (1-h)^T}{\text{normaliser}}$$
 
 ```python
+import numpy as np
 import pandas as pd
 
 head: int = 140
@@ -43,5 +44,51 @@ bayes_table["head_posterior"] = bayes_table["numerator"] / normaliser
 
 bayes_table["head_posterior"].plot()
 ```
+
 ![](images/bayes_table_plot.png "Bayes Table Plot")
+
+*P(head)* is most probably equal to `bayes_table['head_posterior'].idxmax()` which is 0.56
+
+## Solution by empiricaldist.Pmf
+for a uniform prior,
+
+```python
+import numpy as np
+
+from empiricaldist import Pmf
+
+prb_space: np.ndarray = np.linspace(0, 1, 101)
+
+head: int = 140
+tail: int = 110
+
+def calc_posterior(prior: Pmf, space: np.ndarray, head: int, tail: int) -> Pmf:
+  posterior = prior * (space**head) * ((1-space)**tail)
+  posterior.normalize()
+
+  return posterior
+
+
+prior_uniform_head: Pmf = Pmf(1, prb_space)
+prior_uniform_head.normalize()
+prior_uniform_head.plot()
+
+posterior_uniform_head = calc_posterior(prior_uniform_head, prb_space, head, tail)
+posterior_uniform_head.normalize()
+posterior_uniform_head.plot()
+```
+![](images/Pmf_uniform_plot.png "Posterior probability of head for coin flip with uniform prior")
+
+```python
+posterior_uniform_head.mean(), posterior_uniform_head.max_prob()
+```
+> (0.5595238095238096, 0.56)
+
+```python
+posterior_uniform_head.credible_interval(0.95)
+```
+> array([0.5 , 0.62])
+
+Analysis with Pmf has the option to investigate a triangular prior
+
 
