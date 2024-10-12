@@ -77,7 +77,10 @@ posterior_uniform_head = calc_posterior(prior_uniform_head, prb_space, head, tai
 posterior_uniform_head.normalize()
 posterior_uniform_head.plot()
 ```
+
 ![](images/Pmf_uniform_plot.png "Posterior probability of head for coin flip with uniform prior")
+
+Compare to Bayes Table using `pandas.DataFrame`, `empiricaldist.Pmf` provides additional information such as `mean` and `max_prob` of posterior probability.
 
 ```python
 posterior_uniform_head.mean(), posterior_uniform_head.max_prob()
@@ -90,5 +93,34 @@ posterior_uniform_head.credible_interval(0.95)
 > array([0.5 , 0.62])
 
 Analysis with Pmf has the option to investigate a triangular prior
+
+```python
+tri_prb: np.ndarray = np.append(np.arange(50), np.arange(50, -1, -1))
+
+prior_tri_head: Pmf = Pmf(tri_prb, prb_space)
+prior_tri_head.normalize()
+prior_tri_head.plot()
+
+posterior_tri_head = calc_posterior(prior_tri_head, prb_space, head, tail)
+posterior_tri_head.normalize()
+posterior_tri_head.plot()
+```
+
+![](images/Pmf_triangle_plot.png "Posterior probability of head for coin flip with triangular prior")
+
+```python
+posterior_tri_head.mean(), posterior_tri_head.max_prob()
+```
+> (0.5595238095238096, 0.56)
+
+```python
+posterior_tri_head.credible_interval(0.95)
+```
+> array([0.5 , 0.62])
+
+We can see that Bayes Table and `empiricaldist.Pmf` produce the same solution with `empiricaldist.Pmf` provides additional information such as `mean` and the `credible_interval` of posterior probability. Moreover, it's also proven that the probability distribution of the prior does not influence the posterior probability, the high number of observations overwhelm the effect of prior.
+
+## Solution by PyMC
+
 
 
