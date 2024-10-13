@@ -121,6 +121,7 @@ posterior_tri_head.credible_interval(0.95)
 We can see that Bayes Table and `empiricaldist.Pmf` produce the same solution with `empiricaldist.Pmf` provides additional information such as `mean` and the `credible_interval` of posterior probability. Moreover, it's also proven that the probability distribution of the prior does not influence the posterior probability, the high number of observations overwhelm the effect of prior.
 
 ## Solution by PyMC
+with a uniform prior
 
 ```python
 import arviz as az
@@ -147,7 +148,35 @@ az.summary(icoin)
 az.plot_posterior(icoin, hdi_prob=0.95)
 ```
 
-![](images/pymc_plot.png "PyMC: Posterior probability of head for coin flip")
+![](images/pymc_plot.png "PyMC: Posterior probability of head for coin flip with uniform prior")
+
+PyMC analysis using an informative prior with strong belief in fairness
+
+```python
+with pm.Model() as coin_model:
+  # prior
+  prb_head = pm.Beta("prb_head", alpha=20, beta=20)
+
+  # observation
+  pm.Binomial("heads", n=(head + tail), p=prb_head, observed=head)
+
+  # inference
+  icoin = pm.sample()
+
+
+az.summary(icoin, hdi_prob=0.95)
+```
+|        |mean | sd  |hdi_2.5%|hdi_97.5%|mcse_mean|mcse_sd|ess_bulk|ess_tail|r_hat|
+|:------:|:---:|:---:|:------:|:-------:|:-------:|:-----:|:------:|:------:|:---:|
+|prb_head|0.552|0.028| 0.494  |  0.606  |  0.001  | 0.001 | 918.0  | 1123.0 | 1.0 |
+
+```python
+az.plot_posterior(icoin, hdi_prob=0.95)
+```
+
+![](images/pymc_inform_prior_plot.png "PyMC: Posterior probability of head for coin flip using informative prior with strong belief in fairness")
+
+In conclusion, slight shift towards the assumption that the coin is fair, *P(head)=0.5* . Even with strong prior belief of fairness, the data still indicates that the coin is biased towards heads.
 
 ## References
 + [Think Bayes 2](http://allendowney.github.io/ThinkBayes2/index.html)
