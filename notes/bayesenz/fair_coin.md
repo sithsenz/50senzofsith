@@ -122,5 +122,34 @@ We can see that Bayes Table and `empiricaldist.Pmf` produce the same solution wi
 
 ## Solution by PyMC
 
+```python
+import arviz as az
+import pymc as pm
+
+with pm.Model() as coin_model:
+  # prior
+  prb_head = pm.Uniform("prb_head", 0, 1)
+
+  # observation
+  pm.Binomial("heads", n=(head + tail), p=prb_head, observed=head)
+
+  # inference
+  icoin = pm.sample()
 
 
+az.summary(icoin)
+```
+|        |mean | sd  |hdi_2.5%|hdi_97.5%|mcse_mean|mcse_sd|ess_bulk|ess_tail|r_hat|
+|:------:|:---:|:---:|:------:|:-------:|:-------:|:-----:|:------:|:------:|:---:|
+|prb_head|0.559|0.032| 0.499  |  0.622  |  0.001  | 0.001 | 753.0  | 1360.0 | 1.0 |
+
+```python
+az.plot_posterior(icoin, hdi_prob=0.95)
+```
+
+![](images/pymc_plot.png "PyMC: Posterior probability of head for coin flip")
+
+## References
++ [Think Bayes 2](http://allendowney.github.io/ThinkBayes2/index.html)
+
+*[Table of Content](../../index.md)*
