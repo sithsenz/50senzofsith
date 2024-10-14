@@ -1,24 +1,38 @@
 # Is it fair?
-*Last updated 2024-10-11*
+*Last updated 2024-10-14*
 
-250 coin flips, produces 140 heads and 110 tails. What is the probability that this coin comes up head?
+A total of 250 coin flips was conducted, resulting in 140 heads and 110 tails. The objective is to determine the probability that the coin lands on heads, and whether it can be considered fair. This analysis will be performed using Bayesian inference with the following approaches:
+* Bayes Table using `pandas.DataFrames`
+* `empiricaldist.Pmf` library
+* `PyMC` with uniform and Beta priors
 
-## Solution by Bayes Table
+## Bayesian Inference Overview
 
-From Bayes Theorem:
+Bayes’ theorem is applied to update the probability of a hypothesis based on observed data. In this context:
+* **Prior**: An initial assumption about the fairness of the coin.
+* **Likelihood**: The probability of obtaining the observed outcomes for a given hypothesis.
+* **Posterior**: The updated belief about the coin’s fairness after observing the results.
+
+The formula for Bayes’ theorem is:
 > $$P(\text{head | obs}) = \frac{P(\text{prior}) \times L(\text{head})}{\text{normaliser}}$$
 
-Assuming *P(head) = h*, then *P(tail) = 1 - h* and a uniform prior *P(prior) = p*,
+## Approach 1: Bayes Table with `pandas.DataFrame`
 
-if first flip produced head,
-> $$P(\text{head | (1,0)}) = \frac{p \times h^1 \times (1-h)^0}{\text{normaliser}}$$
+Bayes’ Theorem offers a structured way to update the probability of a hypothesis based on observed data. In the case of a coin flip, each outcome follows a Bernoulli distribution since the result can either be heads (success) or tails (failure). The Bernoulli probability mass function (PMF) is defined as:
+> $$P(\text{head}) = h$$
+> $$P(\text{tail}) = (1-h)$$
 
-similarly, if the second and third produced 1 head and 1 tail
-> $$P(\text{head | (2,0)}) = \frac{p \times h^2 \times (1-h)^0}{\text{normaliser}}$$
-> $$P(\text{head | (2,1)}) = \frac{p \times h^2 \times (1-h)^1}{\text{normaliser}}$$
+When multiple independent flips are performed, the probability of observing a specific sequence of outcomes — given the hypothesized probability *h* — is modeled using a binomial distribution. The likelihood function is expressed as:
+> $$L(h | H, T) = h^H \times (1-h)^T$$
 
-hence,
+This formula gives the probability of obtaining exactly *H* heads and *T* tails for a given value of *h*. By incorporating this likelihood into Bayes’ Theorem, the posterior probability is calculated as:
 > $$P(\text{head | (H,T)}) = \frac{p \times h^H \times (1-h)^T}{\text{normaliser}}$$
+
+Here, *p* represents the prior probability, which is assumed to be uniform, meaning all values of *p* are initially considered equally likely.
+
+In this analysis, the probability space is divided into increments of 0.01, covering the range from 0 to 1. For each possible value of *h*, the prior is multiplied by the likelihood of observing 140 heads and 110 tails. The normaliser ensures that the sum of the posterior probabilities equals 1.
+
+After performing the calculations, the maximum posterior probability (MAP estimate) is identified at `bayes_table['head_posterior'].idxmax()`, which produces `h = 0.56`. This suggests that the coin is slightly biased toward heads.
 
 ```python
 import numpy as np
@@ -46,8 +60,6 @@ bayes_table["head_posterior"].plot()
 ```
 
 ![](images/bayes_table_plot.png "Bayes Table Plot")
-
-*P(head)* is most probably equal to `bayes_table['head_posterior'].idxmax()` which is 0.56
 
 ## Solution by empiricaldist.Pmf
 for a uniform prior,
