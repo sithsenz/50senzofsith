@@ -1,5 +1,5 @@
 # Is it fair?
-*Last updated 2024-10-14*
+*Last updated 2024-10-15*
 
 A total of 250 coin flips was conducted, resulting in 140 heads and 110 tails. The objective is to determine the probability that the coin lands on heads, and whether it can be considered fair. This analysis will be performed using Bayesian inference with the following approaches:
 * Bayes Table using `pandas.DataFrames`
