@@ -19,7 +19,7 @@ The formula for Bayes’ theorem is:
 ## Approach 1: Bayes Table with `pandas.DataFrame`
 
 Bayes’ Theorem offers a structured way to update the probability of a hypothesis based on observed data. In the case of a coin flip, each outcome follows a Bernoulli distribution since the result can either be heads (success) or tails (failure). The Bernoulli probability mass function (PMF) is defined as:
-> $$P(\text{head}) = h$$
+> $$P(\text{head}) = h$$  
 > $$P(\text{tail}) = (1-h)$$
 
 When multiple independent flips are performed, the probability of observing a specific sequence of outcomes — given the hypothesized probability *h* — is modeled using a binomial distribution. The likelihood function is expressed as:
@@ -173,9 +173,21 @@ with pm.Model() as coin_model:
 
 az.summary(icoin)
 ```
-|        |mean | sd  |hdi_2.5%|hdi_97.5%|mcse_mean|mcse_sd|ess_bulk|ess_tail|r_hat|
-|:------:|:---:|:---:|:------:|:-------:|:-------:|:-----:|:------:|:------:|:---:|
-|prb_head|0.559|0.032| 0.499  |  0.622  |  0.001  | 0.001 | 753.0  | 1360.0 | 1.0 |
+<table>
+    <th>
+        <td>mean</td>
+        <td>sd</td>
+        <td>hdi_2.5%</td>
+        <td>hdi_97.5%</td>
+    </th>
+    <tr>
+        <td>prb_head</td>
+        <td>0.559</td>
+        <td>0.032</td>
+        <td>0.499</td>
+        <td>0.622</td>
+    </tr>
+</table>
 
 ```python
 az.plot_posterior(icoin, hdi_prob=0.95)
@@ -208,9 +220,22 @@ with pm.Model() as coin_model:
 
 az.summary(icoin, hdi_prob=0.95)
 ```
-|        |mean | sd  |hdi_2.5%|hdi_97.5%|mcse_mean|mcse_sd|ess_bulk|ess_tail|r_hat|
-|:------:|:---:|:---:|:------:|:-------:|:-------:|:-----:|:------:|:------:|:---:|
-|prb_head|0.552|0.028| 0.494  |  0.606  |  0.001  | 0.001 | 918.0  | 1123.0 | 1.0 |
+
+<table>
+    <th>
+        <td>mean</td>
+        <td>sd</td>
+        <td>hdi_2.5%</td>
+        <td>hdi_97.5%</td>
+    </th>
+    <tr>
+        <td>prb_head</td>
+        <td>0.552</td>
+        <td>0.028</td>
+        <td>0.494</td>
+        <td>0.606</td>
+    </tr>
+</table>
 
 ```python
 az.plot_posterior(icoin, hdi_prob=0.95)
@@ -230,7 +255,7 @@ This demonstrates that although the prior suggested fairness, the observed data 
 * Prior Influence: Although a Beta prior expressed confidence in fairness, the observed data still led to the conclusion that the coin is biased
 * Posterior Uncertainty: The 95% credible interval ([0.5, 0.62]) shows that there is some uncertainty in the estimate
 * This consistency across different priors highlights how Bayesian methods can incorporate prior beliefs while ensuring that strong data can override those assumptions
-* Choice of Tools: While the `Bayes Table` and `empiricaldist.Pmf` offer transparency, PyMC provides flexibility and efficiency for more complex modeling
+* Choice of Tools: While the `Bayes Table` and `empiricaldist.Pmf` offer transparency, `PyMC` provides flexibility and efficiency for more complex modeling
 
 ## Conclusion
 
