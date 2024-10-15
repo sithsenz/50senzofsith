@@ -61,8 +61,16 @@ bayes_table["head_posterior"].plot()
 
 ![](images/bayes_table_plot.png "Bayes Table Plot")
 
-## Solution by empiricaldist.Pmf
-for a uniform prior,
+## Approach 2: Using empiricaldist.Pmf
+
+The `empiricaldist.Pmf` library was employed to simplify calculations by representing both priors and posteriors as probability mass functions (PMFs). Two scenarios were considered under this approach:
+
+1. Uniform Prior: All possible values for the probability of heads were assigned equal likelihood, reflecting complete uncertainty.
+2. Triangular Prior: A prior was centered around fairness `h = 0.5`, to investigate whether such an assumption would influence the posterior distribution.
+
+### Uniform Prior Analysis
+
+In the first scenario, a uniform prior was applied, treating each value from 0 to 1 as equally likely. For every hypothesis *h*, the posterior was calculated by multiplying the prior with the likelihood of observing 140 heads and 110 tails. The posterior was then normalized to ensure that all probabilities summed to 1.
 
 ```python
 import numpy as np
@@ -92,8 +100,6 @@ posterior_uniform_head.plot()
 
 ![](images/Pmf_uniform_plot.png "Posterior probability of head for coin flip with uniform prior")
 
-Compare to Bayes Table using `pandas.DataFrame`, `empiricaldist.Pmf` provides additional information such as `mean` and `max_prob` of posterior probability.
-
 ```python
 posterior_uniform_head.mean(), posterior_uniform_head.max_prob()
 ```
@@ -104,7 +110,13 @@ posterior_uniform_head.credible_interval(0.95)
 ```
 > array([0.5 , 0.62])
 
-Analysis with Pmf has the option to investigate a triangular prior
+The mean posterior probability was found to be approximately 0.56, which aligns with the result from the previous approach. The maximum posterior probability (MAP estimate) was also identified at 0.56. Additionally, the 95% credible interval was determined to be [0.5, 0.62], suggesting that the true probability of heads likely falls within this range.
+
+These results indicate that the coin is slightly biased toward heads.
+
+### Triangular Prior Analysis
+
+To explore whether an assumption favoring fairness `h = 0.5` would affect the outcome, a triangular prior was applied. This prior assigns higher probability near 0.5, with decreasing probabilities towards the extremes (0 and 1).
 
 ```python
 tri_prb: np.ndarray = np.append(np.arange(50), np.arange(50, -1, -1))
@@ -130,10 +142,19 @@ posterior_tri_head.credible_interval(0.95)
 ```
 > array([0.5 , 0.62])
 
-We can see that Bayes Table and `empiricaldist.Pmf` produce the same solution with `empiricaldist.Pmf` provides additional information such as `mean` and the `credible_interval` of posterior probability. Moreover, it's also proven that the probability distribution of the prior does not influence the posterior probability, the high number of observations overwhelm the effect of prior.
+Despite the change in prior, the posterior distribution remained consistent with the results obtained using the uniform prior. The mean posterior was again found to be approximately 0.56, with a 95% credible interval of [0.5, 0.62].
 
-## Solution by PyMC
-with a uniform prior
+### Interpretation of Results
+
+The analysis demonstrates that the choice of prior (uniform or triangular) does not significantly influence the results, as the data (140 heads out of 250 flips) is sufficiently informative to dominate the prior. The posterior suggests a slight bias toward heads, with the most likely value for the probability of heads being around 0.56.
+
+## Approach 3: Bayesian Inference with `PyMC`
+
+A model was built using `PyMC`, first with a uniform prior and then with a Beta prior to incorporate stronger assumptions about fairness.
+
+### With Uniform Prior
+
+A uniform prior was defined over the range [0, 1], representing complete uncertainty about the coin’s fairness. The observations were modeled as a binomial distribution, where the total number of flips was set to 250, and the probability of heads was treated as unknown.
 
 ```python
 import arviz as az
@@ -162,7 +183,16 @@ az.plot_posterior(icoin, hdi_prob=0.95)
 
 ![](images/pymc_plot.png "PyMC: Posterior probability of head for coin flip with uniform prior")
 
-PyMC analysis using an informative prior with strong belief in fairness
+The posterior summary is as follows:
+
+* Mean: 0.559
+* 95% HDI (Highest Density Interval): [0.499, 0.622]
+
+These results align with those from the earlier methods, suggesting a slight bias towards heads.
+
+### With Informative Beta Prior
+
+A Beta prior was introduced with parameters `alpha = 20` and `beta = 20`, reflecting a strong belief that the coin is fair `h = 0.5`.
 
 ```python
 with pm.Model() as coin_model:
@@ -188,7 +218,23 @@ az.plot_posterior(icoin, hdi_prob=0.95)
 
 ![](images/pymc_inform_prior_plot.png "PyMC: Posterior probability of head for coin flip using informative prior with strong belief in fairness")
 
-In conclusion, slight shift towards the assumption that the coin is fair, *P(head)=0.5* . Even with strong prior belief of fairness, the data still indicates that the coin is biased towards heads.
+Even with this strong prior, the data-driven posterior indicated a bias towards heads, as summarized below:
+
+* Mean: 0.552
+* 95% HDI: [0.494, 0.606]
+
+This demonstrates that although the prior suggested fairness, the observed data shifted the posterior towards a bias.
+
+## Key Insights from the Analysis
+
+* Prior Influence: Although a Beta prior expressed confidence in fairness, the observed data still led to the conclusion that the coin is biased
+* Posterior Uncertainty: The 95% credible interval ([0.5, 0.62]) shows that there is some uncertainty in the estimate
+* This consistency across different priors highlights how Bayesian methods can incorporate prior beliefs while ensuring that strong data can override those assumptions
+* Choice of Tools: While the `Bayes Table` and `empiricaldist.Pmf` offer transparency, PyMC provides flexibility and efficiency for more complex modeling
+
+## Conclusion
+
+All methods converge on the same conclusion that the probability of heads is estimated to be approximately 0.56, indicating a slight bias towards heads. Although an informative prior favoring fairness was tested, the data suggested otherwise. The results demonstrate how Bayesian methods allow prior beliefs to be incorporated but also updated based on evidence.
 
 ## References
 + [Think Bayes 2](http://allendowney.github.io/ThinkBayes2/index.html)
