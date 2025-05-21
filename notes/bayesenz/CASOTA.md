@@ -3,6 +3,7 @@
 
 ## Two Forms of the Theorem
 ### The Probability Form
+![venn_AB](images/AnB.png "Venn's diagram illustrating Set A and Set B"){:width="36px"}
 The usual way of presenting Bayesian Theorem.
 >When P(A) and P(B) is not mutually exclusive:  
 >$$P(A \cap B) = P(A) \times P(B | A)$$  
