@@ -5,6 +5,7 @@
   + [Head or Tail: Is It Fair?](notes/bayesenz/fair_coin.md)
 + Measurement in Microbiological Laboratory
   + [Measurement Uncertainty in Qualitative Testing](measurement/mu_qual.md)
+  + [Bayesian Derivation of Diagnostic Test Requirements](notes/bayesenz/CASOTA.md)
 + Python
   + [FastAPI](fastapi/tutorial_fastapi.md)
 
