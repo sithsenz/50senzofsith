@@ -119,11 +119,20 @@ each step refining the estimate of disease probability.
 
 ### 3.3 Worked Example
 Continuing from 3.1, the required LR is impractically high for any single test. Now consider three tests in series:
-| Test  | Sn    | Sp    | LR    |
-| :---: | :---: | :---: | :---: |
-| A     | 99.9% | 99.7% | $$\frac{0.999}{1-0.997} = 333$$ |
-| B     | 99.8% | 99.8% | $$\frac{0.998}{1-0.998} = 499$$ |
-| C     | 99.7% | 99.9% | $$\frac{0.997}{1-0.999} = 997$$ |
+<table>
+  <th>
+    <td>Test</td><td>Sn</td><td>Sp</td><td>LR</td>
+  </th>
+  <tr>
+    <td>First Test</td><td>A</td><td>99.9%</td><td>99.7%</td><td>$$\frac{0.999}{1-0.997} = 333$$</td>
+  </tr>
+  <tr>
+    <td>Second Test</td><td>B</td><td>99.8%</td><td>99.8%</td><td>$$\frac{0.998}{1-0.998} = 499$$</td>
+  </tr>
+  <tr>
+    <td>Third Test</td><td>C</td><td>99.7%</td><td>99.9%</td><td>$$\frac{0.997}{1-0.999} = 997$$</td>
+  </tr>
+</table>
 
 >$$LR_{\text{desired}} = 9,899,901$$  
 >
