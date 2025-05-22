@@ -62,7 +62,7 @@ When a minimum acceptable PPV is defined by clinical requirements, we can conver
 Likelihood Ratio (LR) using odds transformation.
 
 ### 2.1 Threshold-Based Requirements
-Assuming that clinicians define a minimum acceptable PPV, say $`PPV \geq \theta`$, for a test result to be considered actionable.
+Assuming that clinicians define a minimum acceptable PPV, say $$PPV \geq \theta$$, for a test result to be considered actionable.
 >1. Since:  
 >$$PPV = P(D+|T+) = \text{Post-Test Probability}$$  
 >
@@ -77,9 +77,7 @@ Assuming that clinicians define a minimum acceptable PPV, say $`PPV \geq \theta`
 >$$LR_{T+} \times \frac{\rho}{1 - \rho} \geq \frac{\theta}{1 - \theta}$$  
 
 So the requirement on the test's likelihood ratio becomes:
-```math
-LR_{T+} \ge \frac{\theta}{1 - \theta} \times \frac{1 - \rho}{\rho}
-```
+>$$LR_{T+} \ge \frac{\theta}{1 - \theta} \times \frac{1 - \rho}{\rho}$$
 
 This inequality defines the minimum diagnostic strength needed from the test, as dictated by the prevalence
 of disease and the clinician's acceptable predictive threshold.
@@ -87,8 +85,8 @@ of disease and the clinician's acceptable predictive threshold.
 ## 3. Implications for Testing Strategy
 ### 3.1 Limitation of a Single Test
 In low-prevalence settings, the required likelihood ratio can be extremely high. For example, if:
-- Prevalence, $`\rho = \frac{1}{100,000}`$ or 0.00001
-- Desired PPV, $`\theta \geq 0.99`$ or 99%
+- Prevalence, $$\rho = \frac{1}{100,000}$$ or 0.00001
+- Desired PPV, $$\theta \geq 0.99$$ or 99%
 
 > Then,  
 > $$LR_{\text{desired}} \geq \frac{0.99}{1 - 0.99} \times \frac{1 - 0.00001}{0.00001} = 9,899,901$$  
@@ -101,20 +99,20 @@ the capabilities of any single diagnostic test.
 In sequential or algorithmic testing, the result of one test updates the pre-test odds for the next.
 
 >First Test (Test A)  
->Let $`O_0`$​ be the initial pre-test odds, derived from prevalence  
->$`O_A = O_0 \times LR_{A+}`$
+>Let $$O_0$$​ be the initial pre-test odds, derived from prevalence  
+>$$O_A = O_0 \times LR_{A+}$$
 >
 >Second Test (Test B)  
 >The post-test odds from Test A becomes the new pre-test odds for Test B  
->$`O_B = O_A \times LR_{B+} = (O_0 \times LR_{A+}) \times LR_{B+}`$  
+>$$O_B = O_A \times LR_{B+} = (O_0 \times LR_{A+}) \times LR_{B+}$$  
 >
 >Third Test (Test C)  
 >Continuing the sequence
->$`O_C = O_B \times LR_{C+} = (O_0 \times LR_{A+} \times LR_{B+}) \times LR_{C+}`$  
+>$$O_C = O_B \times LR_{C+} = (O_0 \times LR_{A+} \times LR_{B+}) \times LR_{C+}$$  
 >
 >General Form  
 >By induction, for n serial tests:  
->$`O_n = O_0 \times (LR_{A+} \times LR_{B+} \times ... \times LR_{n+})`$
+>$$O_n = O_0 \times (LR_{A+} \times LR_{B+} \times ... \times LR_{n+})$$
 
 This derivation shows that likelihood ratios are multiplicative when diagnostic tests are applied in series,
 each step refining the estimate of disease probability.
@@ -123,16 +121,16 @@ each step refining the estimate of disease probability.
 Continuing from 3.1, the required LR is impractically high for any single test. Now consider three tests in series:
 | Test  | Sn    | Sp    | LR
 | :---: | :---: | :---: | :---: |
-| A     | 99.9% | 99.7% | $`\frac{0.999}{1-0.997} = 333`$ |
-| B     | 99.8% | 99.8% | $`\frac{0.998}{1-0.998} = 499`$ |
-| C     | 99.7% | 99.9% | $`\frac{0.997}{1-0.999} = 997`$ |
+| A     | 99.9% | 99.7% | $$\frac{0.999}{1-0.997} = 333$$ |
+| B     | 99.8% | 99.8% | $$\frac{0.998}{1-0.998} = 499$$ |
+| C     | 99.7% | 99.9% | $$\frac{0.997}{1-0.999} = 997$$ |
 
->$`LR_{\text{desired}} = 9,899,901`$  
+>$$LR_{\text{desired}} = 9,899,901$$  
 >
 >Multiply the LRs:  
->$`LR_{A+} = 333 < LR_{\text{desired}}`$  
->$`LR_{A+, B+} = 333 \times 499 =  166,167 < LR_{\text{desired}}`$  
->$`LR_{A+, B+, C+} = 333 \times 499 \times 997 = 165,668,499 > LR_{\text{desired}}`$  
+>$$LR_{A+} = 333 < LR_{\text{desired}}$$  
+>$$LR_{A+, B+} = 333 \times 499 =  166,167 < LR_{\text{desired}}$$  
+>$$LR_{A+, B+, C+} = 333 \times 499 \times 997 = 165,668,499 > LR_{\text{desired}}$$  
 
 The combined LR exceeds the required LR of 9,899,901, meaning that serial testing with A, B, and C meets the clinical threshold of PPV ≥ 0.99.
 
