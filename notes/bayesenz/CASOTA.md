@@ -134,6 +134,7 @@ Continuing from 3.1, the required LR is impractically high for any single test. 
   </tr>
 </table>
 
+>Clinically desired LR  
 >$$LR_{\text{desired}} = 9,899,901$$  
 >
 >Multiply the LRs:  
