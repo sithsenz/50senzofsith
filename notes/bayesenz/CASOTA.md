@@ -1,198 +1,152 @@
-# Translating Clinical Threshold to Laboratory Performance Specifications
-*Last updated 2025-05-20*
+# Bayesian Derivation of Diagnostic Test Requirements
+#### Technical Derivations Supporting the CASOTA Framework
+*Last updated 2025-05-22*
 
-## Two Forms of the Theorem
-### The Probability Form
+## Purpose of this Document
+This document presents the mathematical foundation underlying the CASOTA (Clinically Acceptable State Of The Art) framework. It provides a step-by-step derivation of key formulas used to translate clinician-defined predictive value thresholds (such as PPV or NPV) into laboratory test performance requirements (sensitivity and specificity), using Bayes’ Theorem.
 
-<img src="images/AnB.png" width="400">
+The content here is intended as a technical supplement to the CASOTA poster presentation. It focuses solely on the theoretical basis and derivations without clinical commentary or implementation guidance.
 
-The usual way of presenting Bayesian Theorem.
+## 1. Bayes’ Theorem: Probability and Odds Forms
+Bayes’ Theorem provides the foundational link between disease prevalence (pre-test probability), test characteristics (sensitivity and specificity), and the resulting predictive values (post-test probabilities).
 
-```math
-\begin{gather*}
-\text{When P(A) and P(B) is not mutually exclusive:}\\
-P(A \cap B) = P(A) \times P(B | A)\\
-P(B \cap A) = P(B) \times P(A | B)\\
-\end{gather*}
-```
-but,
+There are two algebraically equivalent forms of Bayes’ Theorem that will be used throughout this document:
 
-```math
-P(B \cap A) = P(A \cap B)
-```
-
-hence,
-
-```math
-P(B) \times P(A | B) = P(A) \times P(B | A)
-```
-
+### 1.1 Probability Form
+This is the classic form, expressing conditional probabilities directly:
 ```math
 P(A | B) = \frac{P(A) \times P(B | A)}{P(B)}
 ```
 
-In diagnostic testing, probability of Diseased (D+) when Test (T) is positive:
+In the context of diagnostic testing:
 ```math
 P(D+ | T+) = \frac{P(D+) \times P(T+ | D+)}{P(T+)}
 ```
 
-Probability of Not Diseased (D-) when Test (T) is positive:
-```math
-P(D- | T+) = \frac{P(D-) \times P(T+ | D-)}{P(T+)}
-```
+where:
+- $`P(D+ | T+)`$: probability of disease given a positive test result (PPV)
+- $`P(T+ | D+)`$: sensitivity
+- $`P(D+)`$: disease prevalence
+- $`P(T+)`$: marginal probability of a positive test
 
-### The Odds Form
-What is the odds that the patient has the disease when the test is positive?
+### 1.2 Odds Form
+Rewriting the theorem in odds form is useful for evaluating serial tests and simplifying multiplicative relationships:
+>1. Divide both posterior probabilities as fractions using Bayes’ Theorem  
+>$$\frac{P(D+|T+)}{P(D-|T+)} = \frac{\frac{P(D+) \times P(T+ | D+)}{P(T+)}}{\frac{P(D-) \times P(T+ | D-)}{P(T+)}}$$
+>
+>2. Cancel out the common term $`P(T+)`$  
+>$$\frac{P(D+|T+)}{P(D-|T+)} = \frac{P(D+) \times P(T+ | D+)}{P(D-) \times P(T+ | D-)}$$
+>
+>3. Group terms into Pre-Test Odds and Likelihood Ratio  
+>$$\frac{P(D+|T+)}{P(D-|T+)} = \frac{P(D+)}{P(D-)} \times \frac{P(T+ | D+)}{P(T+ | D-)}$$
 
-```math
-\begin{align*}
-\frac{P(D+|T+)}{P(D-|T+)} &= \frac{\frac{P(D+) \times P(T+ | D+)}{P(T+)}}{\frac{P(D-) \times P(T+ | D-)}{P(T+)}}\\
-\\
-\frac{P(D+|T+)}{P(D-|T+)} &= \frac{P(D+) \times P(T+ | D+)}{P(D-) \times P(T+ | D-)}\\
-\\
-\frac{P(D+|T+)}{P(D-|T+)} &= \frac{P(D+)}{P(D-)} \times \frac{P(T+ | D+)}{P(T+ | D-)}\\
-\end{align*}
-```
-
-In odds terms:
-
+or more compactly:
 ```math
 \text{Post-Test Odds} = \text{Pre-Test Odds} \times \text{Likelihood Ratio}
 ```
 
-Likelihood Ratio (LR) when Test is positive:
-```math
-LR_{T+} = \frac{P(T+ | D+)}{P(T+ | D-)}
-```
+The Positive Likelihood Ratio can be rewritten in terms of sensitivity and specificity:
+>1. Sensitivity, $`Sn = P(T+|D+)`$  
+>2. Specificity, $`Sp = P(T-|D-)`$  
+>3. $`P(T+|D-) + P(T-|D-) = 1`$  
+>4. $$LR_{T+} = \frac{P(T+|D+)}{P(T+|D-)} = \frac{P(T+|D+)}{1-P(T-|D-)}$$
 
-but Sensitivity (Sn) is $`Sn = P(T+|D+)`$  
-while, Specificity (Sp) is $`Sp = P(T-|D-)`$  
-and, $`P(T+|D-) + P(T-|D-) = 1`$
-
+hence,
 ```math
 LR_{T+} = \frac{Sn}{1-Sp}
 ```
 
-### Probability :arrows_counterclockwise: Odds
-Probability :arrow_right: Odds
-```math
-\text{Probability} = \frac{\text{Odds}}{1 + \text{Odds}}
-```
+### 1.3 Probability–Odds Conversion
+To move between probability and odds representations:  
+>From Odds to Probability:  
+>$$\text{Probability} = \frac{\text{Odds}}{1 + \text{Odds}}$$  
+>
+>From Probability to Odds:  
+>$$\text{Odds} = \frac{\text{Probability}}{1 - \text{Probability}}$$
 
-Odds ➡️ Probability
-```math
-\text{Odds} = \frac{\text{Probability}}{1 - \text{Probability}}
-```
+## 2. Applying a Clinical Predictive Value Threshold
+In diagnostic test evaluation, the post-test probability is often expressed as Positive Predictive Value (PPV).
+When a minimum acceptable PPV is defined by clinical requirements, we can convert this into a minimum required
+Likelihood Ratio (LR) using odds transformation.
 
-## Clinical Threshold
-If the desired clinical threshold ie Positive Predictive Value (PPV) is set as $`\theta`$
-```math
-PPV \ge \theta
-```
+### 2.1 Threshold-Based Requirements
+Assuming that clinicians define a minimum acceptable PPV, say $`PPV \geq \theta`$, for a test result to be considered actionable.
+>1. Since:  
+>$$PPV = P(D+|T+) = \text{Post-Test Probability}$$  
+>
+>2. Convert this to post-test odds:  
+>$$\text{Post-Test Odds} \geq \frac{\theta}{1 - \theta}$$  
+>
+>3. Using the odds form of Bayes’ theorem, the inequality for satisfying the PPV threshold becomes:  
+>$$LR_{T+} \times \text{Pre-Test Odds} \geq \frac{\theta}{1 - \theta}$$  
+>
+>4. Pre-test odds can be derived from prevalence, ρ:  
+>$$\text{Pre-Test Odds} = \frac{\rho}{1 - \rho}$$  
+>$$LR_{T+} \times \frac{\rho}{1 - \rho} \geq \frac{\theta}{1 - \theta}$$  
 
-but, the desired $`PPV = \text{Post-Test Probability}`$  
-then, $`\text{Post-Test Odds} = \frac{\theta}{1 - \theta}`$
-
-```math
-LR_{T+} \times \text{Pre-Test Odds} \ge \frac{\theta}{1 - \theta}
-```
-
-but, Pre-Test Probability = Prevalence, $`\rho`$  
-then, $`\text{Pre-Test Odds} = \frac{\rho}{1 - \rho}`$  
-hence,
-```math
-LR_{T+} \times \frac{\rho}{1 - \rho} \ge \frac{\theta}{1 - \theta}
-```
-
+So the requirement on the test's likelihood ratio becomes:
 ```math
 LR_{T+} \ge \frac{\theta}{1 - \theta} \times \frac{1 - \rho}{\rho}
 ```
 
-## Algorithmic Testing
-For disease with low prevalence, the required likelihood ratio would be too high for existing tests or assays.
-For example, if prevalence, $`\rho = \frac{1}{100,000}`$ (or 0.00001) and the desired PPV, $`\theta \ge 0.99`$ (or 99%),
-the calculated likelihood ratio, $`LR_{\text{desired}} \ge 9,899,901`$. This high LR is not achievable in practice.
-```math
-\begin{gather*}
-LR_{\text{desired}} \ge \frac{0.99}{1 - 0.99} \times \frac{1 - 0.00001}{0.00001}\\
-LR_{\text{desired}} \ge 9,899,901
-\end{gather*}
-```
+This inequality defines the minimum diagnostic strength needed from the test, as dictated by the prevalence
+of disease and the clinician's acceptable predictive threshold.
 
-### Test A, followed by Test B, followed by Test C
-After testing with Test A, the post-test odds can be calculated like this:
-```math
-\begin{gather*}
-\text{Post-Test Odds} = \text{Pre-Test Odds} \times \text{Likelihood Ratio}\\
-O(D+:D-|A+) = O(D+:D-) \times LR_{A+}\\
-\end{gather*}
-```
+## 3. Implications for Testing Strategy
+### 3.1 Limitation of a Single Test
+In low-prevalence settings, the required likelihood ratio can be extremely high. For example, if:
+- Prevalence, $`\rho = \frac{1}{100,000}`$ or 0.00001
+- Desired PPV, $`\theta \geq 0.99`$ or 99%
 
-If we follow up with Test B, the new post-test odds (after Test B) can be calculated as follow:
-```math
-\begin{gather*}
-O(D+:D-|A+) \text{becomes the new pre-test odds for Test B}\\
-O(D+:D-:B+) = O(D+:D-|A+) \times LR_{B+}\\
-O(D+:D-|B+) = O(D+:D-) \times LR_{A+} \times LR_{B+}\\
-\end{gather*}
-```
+> Then,  
+> $$LR_{\text{desired}} \geq \frac{0.99}{1 - 0.99} \times \frac{1 - 0.00001}{0.00001} = 9,899,901$$  
 
-Again, if we follow up with Test C, the new post-test odds (after Test C) can be calculated like this:
-```math
-\begin{gather*}
-O(D+:D-|B+) \text{becomes the new pre-test odds for Test C}\\
-O(D+:D-|C+) = O(D+:D-|B+) \times LR_{C+}\\
-O(D+:D-|C+) = O(D+:D-) \times LR_{A+} \times LR_{B+} \times LR_{C+}\\
-\end{gather*}
-```
+Such an LR is unattainable by any single diagnostic test currently available, regardless of high sensitivity and specificity.
+This illustrates that when prevalence is very low, an extremely high likelihood ratio is required — often far beyond 
+the capabilities of any single diagnostic test.
 
-A pattern emerges whereby likelihood ratio (LR) is actually the product of LR of each tests ran in sequence.
-```math
-\begin{gather*}
-\text{Post-Test Odds} = \text{Pre-Test Odds} \times \text{Likelihood Ratio}\\
-\text{Post-Test Odds} = \text{Pre-Test Odds} \times (LR_{A} \times LR_{B} \times LR_{C} ... )\\
-\end{gather*}
-```
+### 3.2 Serial Testing and the Multiplicative Property of LRs
+In sequential or algorithmic testing, the result of one test updates the pre-test odds for the next.
 
-### Serial Testing
-Hence, to achieve a high $`LR_{\text{desired}} \ge 9,899,901`$, we can implement a serial testing until $`LR_{T+} \ge LR_{\text{desired}}`$.
-Let's take for example, Test A, B, and C, each with their own performance specifications as follow:
-| Test  | Sn    | Sp    |
-| :---: | :---: | :---: |
-| A     | 99.9% | 99.7% |
-| B     | 99.8% | 99.8% |
-| C     | 99.7% | 99.9% |
+>First Test (Test A)  
+>Let $`O_0`$​ be the initial pre-test odds, derived from prevalence  
+>$`O_A = O_0 \times LR_{A+}`$
+>
+>Second Test (Test B)  
+>The post-test odds from Test A becomes the new pre-test odds for Test B  
+>$`O_B = O_A \times LR_{B+} = (O_0 \times LR_{A+}) \times LR_{B+}`$  
+>
+>Third Test (Test C)  
+>Continuing the sequence
+>$`O_C = O_B \times LR_{C+} = (O_0 \times LR_{A+} \times LR_{B+}) \times LR_{C+}`$  
+>
+>General Form  
+>By induction, for n serial tests:  
+>$`O_n = O_0 \times (LR_{A+} \times LR_{B+} \times ... \times LR_{n+})`$
 
-Starts with Test A,
-```math
-\begin{align*}
-LR_{A+} &= \frac{0.999}{1-0.997}\\
-&= 333\\
-\end{align*}
-```
-after initial testing with Test A, $`LR_{A+} < LR_{\text{desired}}`$
+This derivation shows that likelihood ratios are multiplicative when diagnostic tests are applied in series,
+each step refining the estimate of disease probability.
 
-Proceeds to Test B,
-```math
-\begin{align*}
-LR_{A+} \times LR_{B+} &= 333 \times \frac{0.998}{1-0.998}\\
-&= 333 \times 499\\
-&= 166,167\\
-\end{align*}
-```
-after serial testing with Test A and Test B, $`LR_{A+,B+} < LR_{\text{desired}}`$
+### 3.3 Worked Example
+Continuing from 3.1, the required LR is impractically high for any single test. Now consider three tests in series:
+| Test  | Sn    | Sp    | LR
+| :---: | :---: | :---: | :---: |
+| A     | 99.9% | 99.7% | $`\frac{0.999}{1-0.997} = 333`$ |
+| B     | 99.8% | 99.8% | $`\frac{0.998}{1-0.998} = 499`$ |
+| C     | 99.7% | 99.9% | $`\frac{0.997}{1-0.999} = 997`$ |
 
-Proceeds to Test C,
-```math
-\begin{align*}
-LR_{A+} \times LR_{B+} \times LR_{C+} &= 333 \times 499 \times \frac{0.997}{1-0.999}\\
-&= 333 \times 499 \times 997\\
-&= 165,668,499\\
-\end{align*}
-```
-after serial testing with Test A, Test B and Test C, $`LR_{A+, B+, C+} > LR_{\text{desired}}`$
+>$`LR_{\text{desired}} = 9,899,901`$  
+>
+>Multiply the LRs:  
+>$`LR_{A+} = 333 < LR_{\text{desired}}`$  
+>$`LR_{A+, B+} = 333 \times 499 =  166,167 < LR_{\text{desired}}`$  
+>$`LR_{A+, B+, C+} = 333 \times 499 \times 997 = 165,668,499 > LR_{\text{desired}}`$  
 
-Hence, to achieve the desired clinical threshold of PPV, $`\theta \geq 0.99`$ in a population with very low prevalence, $`\rho = \frac{1}{100,000}`$,
-the laboratory would need to perform 3 consecutive testing using Test A, Test B and Test C.
+The combined LR exceeds the required LR of 9,899,901, meaning that serial testing with A, B, and C meets the clinical threshold of PPV ≥ 0.99.
+
+## Closing
+This technical note derives and formalizes the mathematical relationships that underpin the CASOTA framework. The key result is the
+inequality linking diagnostic test likelihood ratios to clinically defined PPV thresholds and disease prevalence. These results serve
+as the foundation for evaluating whether a given test strategy can meet predefined clinical expectations.
 
 *[Table of Content](../../index.md)*
