@@ -15,7 +15,9 @@ There are two algebraically equivalent forms of Bayes’ Theorem that will be us
 ### 1.1 Probability Form
 This is the classic form, expressing conditional probabilities directly:
 ```math
+\begin{gather*}
 P(A | B) = \frac{P(A) \times P(B | A)}{P(B)}
+\end{gather*}
 ```
 
 In the context of diagnostic testing:
