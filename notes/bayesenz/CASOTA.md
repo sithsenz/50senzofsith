@@ -20,17 +20,17 @@ In the context of diagnostic testing:
 >$$P(D+ | T+) = \frac{P(D+) \times P(T+ | D+)}{P(T+)}$$
 
 where:
-- `P(D+ | T+)`: probability of disease given a positive test result (PPV)
-- `P(T+ | D+)`: sensitivity
-- `P(D+)`: d$iease prevalence
-- `P(T+)`: m$aginal probability of a positive test
+- P(D+ | T+): probability of disease given a positive test result (PPV)
+- P(T+ | D+): sensitivity
+- P(D+): d$iease prevalence
+- P(T+): m$aginal probability of a positive test
 
 ### 1.2 Odds Form
 Rewriting the theorem in odds form is useful for evaluating serial tests and simplifying multiplicative relationships:
 >1. Divide both posterior probabilities as fractions using Bayes’ Theorem  
 >$$\frac{P(D+|T+)}{P(D-|T+)} = \frac{\frac{P(D+) \times P(T+ | D+)}{P(T+)}}{\frac{P(D-) \times P(T+ | D-)}{P(T+)}}$$
 >
->2. Cancel out the common term `P(T+)`  
+>2. Cancel out the common term P(T+)  
 >$$\frac{P(D+|T+)}{P(D-|T+)} = \frac{P(D+) \times P(T+ | D+)}{P(D-) \times P(T+ | D-)}$$
 >
 >3. Group terms into Pre-Test Odds and Likelihood Ratio  
@@ -40,9 +40,9 @@ or more compactly:
 >$$\text{Post-Test Odds} = \text{Pre-Test Odds} \times \text{Likelihood Ratio}$$
 
 The Positive Likelihood Ratio can be rewritten in terms of sensitivity and specificity:
->1. Sensitivity, `Sn = P(T+|D+)`  
->2. Specificity, `Sp = P(T-|D-)`  
->3. `P(T+|D-) + P(T-|D-) = 1`  
+>1. Sensitivity, Sn = P(T+|D+)  
+>2. Specificity, Sp = P(T-|D-)  
+>3. P(T+|D-) + P(T-|D-) = 1  
 >4. $$LR_{T+} = \frac{P(T+|D+)}{P(T+|D-)} = \frac{P(T+|D+)}{1-P(T-|D-)}$$
 
 hence,
