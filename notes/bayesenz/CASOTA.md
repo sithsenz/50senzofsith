@@ -22,8 +22,8 @@ In the context of diagnostic testing:
 where:
 - `P(D+ | T+)`: probability of disease given a positive test result (PPV)
 - `P(T+ | D+)`: sensitivity
-- `P(D+)`: d$iease prevalence
-- `P(T+)`: m$aginal probability of a positive test
+- `P(D+)`: disease prevalence
+- `P(T+)`: marginal probability of a positive test
 
 ### 1.2 Odds Form
 Rewriting the theorem in odds form is useful for evaluating serial tests and simplifying multiplicative relationships:
