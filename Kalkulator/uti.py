@@ -1,5 +1,14 @@
 from dataclasses import dataclass
-from pyCompare import blandAltman
+import matplotlib.pyplot as plt
+
+
+try:
+    from pyCompare import blandAltman
+except ImportError:
+    import subprocess
+    subprocess.run(["pip", "install", "pyCompare", "--quiet"], check=True)
+    from pyCompare import blandAltman
+
 
 @dataclass
 class BlandAltman():
@@ -14,19 +23,23 @@ class BlandAltman():
 
     def plot(self):
         try:
-            x_input = self.x_input
-            y_input = self.y_input
+            X = [float(x.strip()) for x in self.x_input.split(',') if x.strip()]
             
-            X = [float(x.strip()) for x in x_input.split(',')]
+            Y = [float(y.strip()) for y in self.y_input.split(',') if y.strip()]
             
-            Y = [float(y.strip()) for y in y_input.split(',')]
-            
-            mesej: str = f'Bilangan data x_input dan y_input harus sama. x_input mengandungi {len(X)} data, manakala y_input mengandungi {len(Y)} data.'
+            mesej: str = f'''
+Bilangan data x_input dan y_input harus sama.
+x_input mengandungi {len(X)} data, manakala
+y_input mengandungi {len(Y)} data.
+'''
 
-            assert len(X) == len(Y)
+            if len(X) != len(Y):
+                raise ValueError(mesej)
             
             blandAltman(Y, X, confidenceInterval=None)
-        except AssertionError:
-            print(mesej)
+            plt.show()
+
+        except ValueError as ve:
+            print(ve)
         except Exception:
-            print(ralat)
+            print(self.ralat)
