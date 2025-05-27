@@ -23,9 +23,15 @@ class BlandAltman():
 
     def plot(self):
         try:
-            X = [float(x.strip()) for x in self.x_input.split(',') if x.strip()]
-            
-            Y = [float(y.strip()) for y in self.y_input.split(',') if y.strip()]
+            X, Y = [], []
+
+            for x in self.x_input.split(','):
+                if x.strip() := a:
+                    X.append(float(a))
+
+            for y in self.y_input.split(','):
+                if y.strip() := b:
+                    Y.append(float(b))
             
             mesej: str = f'''
 ⚠️ Ralat input! Bilangan data x_input dan y_input harus sama.
@@ -40,6 +46,9 @@ y_input mengandungi {len(Y)} data.
             plt.show()
 
         except ValueError as ve:
+            if "could not convert string to float" in str(ve):
+                print(self.ralat)
+            
             print(ve)
         except Exception:
             print(self.ralat)
