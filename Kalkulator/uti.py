@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 
 try:
     from pyCompare import blandAltman
-except ImportError:
+except ModuleNotFoundError:
     import subprocess
     subprocess.run(["pip", "install", "pyCompare", "--quiet"], check=True)
     from pyCompare import blandAltman
