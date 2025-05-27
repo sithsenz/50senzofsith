@@ -28,7 +28,7 @@ class BlandAltman():
             Y = [float(y.strip()) for y in self.y_input.split(',') if y.strip()]
             
             mesej: str = f'''
-Bilangan data x_input dan y_input harus sama.
+⚠️ Ralat input! Bilangan data x_input dan y_input harus sama.
 x_input mengandungi {len(X)} data, manakala
 y_input mengandungi {len(Y)} data.
 '''
