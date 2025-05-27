@@ -26,12 +26,12 @@ class BlandAltman():
             X, Y = [], []
 
             for x in self.x_input.split(','):
-                if x.strip() := a:
-                    X.append(float(a))
+                if x.strip():
+                    X.append(float(x.strip()))
 
             for y in self.y_input.split(','):
-                if y.strip() := b:
-                    Y.append(float(b))
+                if y.strip():
+                    Y.append(float(y.strip()))
             
             mesej: str = f'''
 ⚠️ Ralat input! Bilangan data x_input dan y_input harus sama.
