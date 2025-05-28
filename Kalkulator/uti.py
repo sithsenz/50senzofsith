@@ -1,5 +1,10 @@
-from dataclasses import dataclass
+import ipywidgets as widgets
 import matplotlib.pyplot as plt
+
+
+from dataclasses import dataclass
+from IPython.display import display
+from ipywidgets import GridspecLayout, Layout
 
 
 try:
@@ -52,3 +57,53 @@ y_input mengandungi {len(Y)} data.
             print(ve)
         except Exception:
             print(self.ralat)
+
+
+@dataclass
+class Wijet():
+    jenis: str
+    label: str
+    lebar: str
+
+    def baharu(self):
+        if self.jenis=="teks":
+            wj = widgets.Text(
+                value=self.label,
+                disabled=True,
+                layout=Layout(width=self.lebar),
+            )
+        elif self.jenis=="integer":
+            wj = widgets.IntText(
+                value=0,
+                disabled=False,
+                layout=Layout(width=self.lebar),
+            )
+        elif self.jenis=="angka":
+            wj = widgets.FloatText(
+                value=0.,
+                disabled=False,
+                layout=Layout(width=self.lebar),
+            )
+    
+        return wj
+
+
+@dataclass
+class Grid():
+    baris: int = 1
+    lajur: int = 3
+
+    def sampel(self):
+        grid = GridspecLayout(self.baris, self.lajur, layout=Layout(width='100%'))
+        
+        label = ["bil n", "bil x", "bil y"]
+
+        for j, t in enumerate(label):
+            grid[0,j] = widgets.IntText(
+                value=1,
+                description=t,
+                disabled=False,
+                layout=Layout(width='100px'),
+            )
+        
+        return grid
