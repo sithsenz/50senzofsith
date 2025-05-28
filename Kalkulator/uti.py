@@ -98,13 +98,13 @@ class Grid():
             for i in range(bil_n + 1):
                 for j in range(jum_lajur):
                     if i==0 and j==0:
-                        self.gridD[i,j] = widgets.Label(value="Data", layout=Layout(width=f'{lebar}px'))
+                        self.gridD[i,j] = widgets.Label(value="Data", layout=Layout(width="100px"))
                     elif i==0 and j<(bil_x + 1):
                         self.gridD[i,j] = widgets.Label(value=f"x{j}", layout=Layout(width=f'{lebar}px'))
                     elif i==0 and j>bil_x:
                         self.gridD[i,j] = widgets.Label(value=f"y{j-bil_x}", layout=Layout(width=f'{lebar}px'))
                     elif j==0:
-                        self.gridD[i,j] = widgets.Label(value=f"S{i}", layout=Layout(width=f'{lebar}px'))
+                        self.gridD[i,j] = widgets.Label(value=f"S{i}", layout=Layout(width=f"100px"))
                     else:
                         self.gridD[i,j] = widgets.FloatText(
                             value=0.,
