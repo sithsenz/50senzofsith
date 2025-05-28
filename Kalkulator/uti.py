@@ -62,6 +62,7 @@ y_input mengandungi {len(Y)} data.
 @dataclass
 class Grid():
     gridS: GridspecLayout = None
+    gridO: widgets.Output = None
     baris: int = 1
     lajur: int = 3
 
@@ -90,10 +91,8 @@ class Grid():
 
         lebar = 1000 // jum_lajur
 
-        self.gridDout = widgets.Output()
-
-        with self.gridDout:
-            self.gridDout.clear_output(wait=True)
+        with self.gridO:
+            self.gridO.clear_output(wait=True)
             self.gridD = GridspecLayout(bil_n + 1, jum_lajur, layout=Layout(width="100%"))
 
             for i in range(bil_n + 1):
@@ -113,4 +112,3 @@ class Grid():
                             layout=Layout(width=f'{lebar}px'),
                         )
         display(self.gridD)
-        display(self.gridDout)
