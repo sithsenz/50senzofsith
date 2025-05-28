@@ -103,7 +103,7 @@ class Grid():
                 value=1,
                 description=t,
                 disabled=False,
-                layout=Layout(width='200px'),
+                layout=Layout(width='25%'),
             )
         
         return grid
