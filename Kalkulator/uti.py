@@ -111,4 +111,5 @@ class Grid():
                             disabled=False,
                             layout=Layout(width=f'{lebar}px'),
                         )
-        display(self.gridD)
+            
+            display(self.gridD)
