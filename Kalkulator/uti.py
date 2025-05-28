@@ -64,7 +64,6 @@ class Grid():
     gridS: GridspecLayout = None
     baris: int = 1
     lajur: int = 3
-    gridDout = widgets.Output()
 
 
     def sampel(self):
@@ -91,6 +90,8 @@ class Grid():
 
         lebar = 1000 // jum_lajur
 
+        self.gridDout = widgets.Output()
+
         with self.gridDout:
             self.gridDout.clear_output(wait=True)
             self.gridD = GridspecLayout(bil_n + 1, jum_lajur, layout=Layout(width="100%"))
@@ -112,3 +113,4 @@ class Grid():
                             layout=Layout(width=f'{lebar}px'),
                         )
         display(self.gridD)
+        display(self.gridDout)
