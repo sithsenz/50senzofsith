@@ -62,7 +62,6 @@ y_input mengandungi {len(Y)} data.
 @dataclass
 class Grid():
     gridS: GridspecLayout = None
-    gridD: GridspecLayout = None
     baris: int = 1
     lajur: int = 3
     gridDout = widgets.Output()
@@ -112,3 +111,4 @@ class Grid():
                             disabled=False,
                             layout=Layout(width=f'{lebar}px'),
                         )
+        display(self.gridD)
