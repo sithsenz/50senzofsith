@@ -16,7 +16,7 @@ except ModuleNotFoundError:
 
 
 @dataclass
-class BlandAltman():
+class BlandAltman:
     x_input: str
     y_input: str
     ralat: str = f'''
@@ -60,12 +60,14 @@ y_input mengandungi {len(Y)} data.
 
 
 @dataclass
-class Grid():
+class Grid:
     gridS: GridspecLayout = None
     gridO: widgets.Output = None
     baris: int = 1
     lajur: int = 3
 
+    def __post_init__(self):
+        self.wj_data = []
 
     def sampel(self):
         grid = GridspecLayout(self.baris, self.lajur, layout=Layout(width="100%"))
@@ -91,25 +93,55 @@ class Grid():
 
         lebar = 1000 // jum_lajur
 
+        self.wj_data = []
+
         with self.gridO:
             self.gridO.clear_output(wait=True)
             self.gridD = GridspecLayout(bil_n + 1, jum_lajur, layout=Layout(width="100%"))
 
             for i in range(bil_n + 1):
+                baris_wj = []
                 for j in range(jum_lajur):
                     if i==0 and j==0:
-                        self.gridD[i,j] = widgets.Label(value="Data", layout=Layout(width=f'{lebar}px'))
+                        wj = widgets.Label(value="Data", layout=Layout(width=f'{lebar}px'))
                     elif i==0 and j<(bil_x + 1):
-                        self.gridD[i,j] = widgets.Label(value=f"x{j}", layout=Layout(width=f'{lebar}px'))
+                        wj = widgets.Label(value=f"x{j}", layout=Layout(width=f'{lebar}px'))
                     elif i==0 and j>bil_x:
-                        self.gridD[i,j] = widgets.Label(value=f"y{j-bil_x}", layout=Layout(width=f'{lebar}px'))
+                        wj = widgets.Label(value=f"y{j-bil_x}", layout=Layout(width=f'{lebar}px'))
                     elif j==0:
-                        self.gridD[i,j] = widgets.Label(value=f"S{i}", layout=Layout(width=f'{lebar}px'))
+                        wj = widgets.Label(value=f"S{i}", layout=Layout(width=f'{lebar}px'))
                     else:
-                        self.gridD[i,j] = widgets.FloatText(
+                        wj = widgets.FloatText(
                             value=0.,
                             disabled=False,
                             layout=Layout(width=f'{lebar}px'),
                         )
+
+                        baris_wj.append(wj)
+                    
+                    self.gridD[i,j] = wj
+                
+                if i>0:
+                    self.wj_data.append(baris_wj)
             
             display(self.gridD)
+    
+    def ambilData(self):
+        data = {
+            "x": [],
+            "y": []
+        }
+
+        if not self.wj_data:
+            return data
+        
+        bil_x = self.gridS[0,1].value
+
+        for baris in self.wj_data:
+            nilai_x = [w.value for w in baris[:bil_x]]
+            nilai_y = [w.value for w in baris[bil_x:]]
+            
+            data["x"].append(nilai_x)
+            data["y"].append(nilai_y)
+        
+        return data
