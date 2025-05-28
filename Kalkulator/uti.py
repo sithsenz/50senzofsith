@@ -111,4 +111,4 @@ class Grid():
                             layout=Layout(width=f'{lebar}px'),
                         )
         
-        return {"pelan": gridDout, "data": gridD}
+        return [gridDout, gridD]
