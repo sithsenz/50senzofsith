@@ -61,8 +61,12 @@ y_input mengandungi {len(Y)} data.
 
 @dataclass
 class Grid():
+    gridS: GridspecLayout = None
+    gridD: GridspecLayout = None
     baris: int = 1
     lajur: int = 3
+    gridDout = widgets.Output()
+
 
     def sampel(self):
         grid = GridspecLayout(self.baris, self.lajur, layout=Layout(width="100%"))
@@ -80,35 +84,31 @@ class Grid():
         
         return grid
     
-    def data(self, gridS, change=None):
-        gridDout = widgets.Output()
-
-        bil_n = gridS[0,0].value
-        bil_x = gridS[0,1].value
-        bil_y = gridS[0,2].value
+    def data(self, change=None):
+        bil_n = self.gridS[0,0].value
+        bil_x = self.gridS[0,1].value
+        bil_y = self.gridS[0,2].value
         jum_lajur = bil_x + bil_y + 1
 
         lebar = 1000 // jum_lajur
 
-        with gridDout:
-            gridDout.clear_output(wait=True)
-            gridD = GridspecLayout(bil_n + 1, jum_lajur, layout=Layout(width="100%"))
+        with self.gridDout:
+            self.gridDout.clear_output(wait=True)
+            self.gridD = GridspecLayout(bil_n + 1, jum_lajur, layout=Layout(width="100%"))
 
             for i in range(bil_n + 1):
                 for j in range(jum_lajur):
                     if i==0 and j==0:
-                        gridD[i,j] = widgets.Label(value="Data", layout=Layout(width=f'{lebar}px'))
+                        self.gridD[i,j] = widgets.Label(value="Data", layout=Layout(width=f'{lebar}px'))
                     elif i==0 and j<(bil_x + 1):
-                        gridD[i,j] = widgets.Label(value=f"x{j}", layout=Layout(width=f'{lebar}px'))
+                        self.gridD[i,j] = widgets.Label(value=f"x{j}", layout=Layout(width=f'{lebar}px'))
                     elif i==0 and j>bil_x:
-                        gridD[i,j] = widgets.Label(value=f"y{j-bil_x}", layout=Layout(width=f'{lebar}px'))
+                        self.gridD[i,j] = widgets.Label(value=f"y{j-bil_x}", layout=Layout(width=f'{lebar}px'))
                     elif j==0:
-                        gridD[i,j] = widgets.Label(value=f"S{i}", layout=Layout(width=f'{lebar}px'))
+                        self.gridD[i,j] = widgets.Label(value=f"S{i}", layout=Layout(width=f'{lebar}px'))
                     else:
-                        gridD[i,j] = widgets.FloatText(
+                        self.gridD[i,j] = widgets.FloatText(
                             value=0.,
                             disabled=False,
                             layout=Layout(width=f'{lebar}px'),
                         )
-        
-        return (gridDout, gridD)
