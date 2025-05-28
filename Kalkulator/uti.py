@@ -60,41 +60,12 @@ y_input mengandungi {len(Y)} data.
 
 
 @dataclass
-class Wijet():
-    jenis: str
-    label: str
-    lebar: str
-
-    def baharu(self):
-        if self.jenis=="teks":
-            wj = widgets.Text(
-                value=self.label,
-                disabled=True,
-                layout=Layout(width=self.lebar),
-            )
-        elif self.jenis=="integer":
-            wj = widgets.IntText(
-                value=0,
-                disabled=False,
-                layout=Layout(width=self.lebar),
-            )
-        elif self.jenis=="angka":
-            wj = widgets.FloatText(
-                value=0.,
-                disabled=False,
-                layout=Layout(width=self.lebar),
-            )
-    
-        return wj
-
-
-@dataclass
 class Grid():
     baris: int = 1
     lajur: int = 3
 
     def sampel(self):
-        grid = GridspecLayout(self.baris, self.lajur, layout=Layout(width='100%'))
+        grid = GridspecLayout(self.baris, self.lajur, layout=Layout(width="100%"))
         
         label = ["bil n", "bil x", "bil y"]
 
@@ -104,7 +75,40 @@ class Grid():
                 value=1,
                 description=t,
                 disabled=False,
-                layout=Layout(width='200px'),
+                layout=Layout(width="200px"),
             )
         
         return grid
+    
+    def data(self, gridS, change=None):
+        gridDout = widgets.Output()
+
+        bil_n = gridS[0,0].value
+        bil_x = gridS[0,1].value
+        bil_y = gridS[0,2].value
+        jum_lajur = bil_x + bil_y
+
+        lebar = 1000 // jum_lajur
+
+        with gridDout:
+            gridDout.clear_output(wait=True)
+            gridD = GridspecLayout(bil_n + 1, jum_lajur + 1, layout=Layout(width="100%"))
+
+            for i in range(bil_n + 1):
+                for j in range(jum_lajur + 1):
+                    if i==0 and j==0:
+                        gridD[i,j] = widgets.Label(value="Data", layout=Layout(width=f'{lebar}px'))
+                    elif i==0 and j<bil_x:
+                        gridD[i,j] = widgets.Label(value=f"x{j+1}", layout=Layout(width=f'{lebar}px'))
+                    elif i==0 and j>=bil_x:
+                        gridD[i,j] = widgets.Label(value=f"y{j-bil_x+1}", layout=Layout(width=f'{lebar}px'))
+                    elif j==0:
+                        gridD[i,j] = widgets.Label(value=f"S{i}", layout=Layout(width=f'{lebar}px'))
+                    else:
+                        gridD[i,j] = widgets.FloatText(
+                            value=0.,
+                            disabled=False,
+                            layout=Layout(width=f'{lebar}px'),
+                        )
+        
+        return {"pelan": gridDout, "data": gridD}
