@@ -100,6 +100,7 @@ class Grid():
 
         for j, t in enumerate(label):
             grid[0,j] = widgets.IntText(
+                min=1,
                 value=1,
                 description=t,
                 disabled=False,
