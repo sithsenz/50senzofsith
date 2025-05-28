@@ -99,7 +99,7 @@ class Grid():
         label = ["bil n", "bil x", "bil y"]
 
         for j, t in enumerate(label):
-            grid[0,j] = widgets.IntText(
+            grid[0,j] = widgets.BoundedIntText(
                 min=1,
                 value=1,
                 description=t,
