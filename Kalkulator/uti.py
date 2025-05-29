@@ -40,11 +40,11 @@ class WLSRegresi:
     def cetak(self):
         if len(self.x_input) < 3:
             print("⚠️ Analisis Regresi WLS memerlukan sekurang-kurangnya 3 sampel.")
-        return
+            return
         
         if len(self.y_input[0]) < 2:
             print("⚠️ Analisis Regresi WLS memerlukan sekurang-kurangnya 2 data ulangan y.")
-        return
+            return
         
         X = np.mean(self.x_input, axis=1)
         Y = np.mean(self.y_input, axis=1)
