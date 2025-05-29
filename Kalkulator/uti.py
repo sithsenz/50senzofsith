@@ -38,6 +38,10 @@ class WLSRegresi:
     y_input: list
 
     def cetak(self):
+        if np.array(y_input).shape[1] < 2:
+            print("⚠️ Analisis Regresi WLS memerlukan sekurang-kurangnya 2 data ulangan y")
+        return
+        
         X = np.mean(self.x_input, axis=1)
         Y = np.mean(self.y_input, axis=1)
 
@@ -68,6 +72,14 @@ class WDRegresi:
         return beta[0] + beta[1] * x
 
     def cetak(self):
+        if np.array(x_input) < 2:
+            print("⚠️ Analisis Regresi Weighted Deming memerlukan sekurang-kurangnya 2 data ulangan x")
+            return
+
+        if np.array(y_input) < 2:
+            print("⚠️ Analisis Regresi Weighted Deming memerlukan sekurang-kurangnya 2 data ulangan y")
+            return
+
         X = np.mean(self.x_input, axis=1)
         Y = np.mean(self.y_input, axis=1)
 
@@ -120,7 +132,7 @@ class Grid:
     def sampel(self):
         grid = GridspecLayout(self.baris, self.lajur, layout=Layout(width="100%"))
 
-        label = ["bil n", "bil x", "bil y"]
+        label = ["Bil sampel n", "Bil Ulangan x", "Bil Ulangan y"]
 
         for j, t in enumerate(label):
             grid[0,j] = widgets.BoundedIntText(
