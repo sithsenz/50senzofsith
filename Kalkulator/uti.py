@@ -42,6 +42,14 @@ class WLSRegresi:
         Y = np.mean(self.y_input, axis=1)
 
         sd_Y = np.std(self.y_input, axis=1, ddof=1)
+
+        if np.any(sd_Y==0):
+            print("⚠️ Amaran: Bacaan Y tanpa varians, silap pastikan tiada kesilapan.")
+            print("⚠️ Nilai SD=0 digantikan dengan SD=1e-6.")
+            print("⚠️ Sila semak kesan penggantian ini ke atas kesimpulan analisis.")
+
+        sd_Y[sd_Y==0] = 1e-6
+        
         pemberat = 1 / sd_Y
 
         X = sm.add_constant(X)
@@ -65,6 +73,20 @@ class WDRegresi:
 
         sd_x = np.std(self.x_input, axis=1, ddof=1)
         sd_y = np.std(self.y_input, axis=1, ddof=1)
+
+        if np.any(sd_x==0):
+            print("⚠️ Amaran: Bacaan X tanpa varians, silap pastikan tiada kesilapan.")
+            print("⚠️ Nilai SD=0 digantikan dengan SD=1e-6.")
+            print("⚠️ Sila semak kesan penggantian ini ke atas kesimpulan analisis.")
+
+        sd_x[sd_x==0] = 1e-6
+
+        if np.any(sd_y==0):
+            print("⚠️ Amaran: Bacaan Y tanpa varians, silap pastikan tiada kesilapan.")
+            print("⚠️ Nilai SD=0 digantikan dengan SD=1e-6.")
+            print("⚠️ Sila semak kesan penggantian ini ke atas kesimpulan analisis.")
+
+        sd_y[sd_y==0] = 1e-6
 
         model = Model(WDRegresi.fungsi_linear)
         data = RealData(X, Y, sx=sd_x, sy=sd_y)
