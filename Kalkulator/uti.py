@@ -8,6 +8,7 @@ from dataclasses import dataclass
 from IPython.display import display
 from ipywidgets import GridspecLayout, Layout
 from scipy.odr import Model, RealData, ODR
+from scipy.stats import t
 
 
 try:
@@ -41,13 +42,6 @@ class WLSRegresi:
         Y = np.mean(self.y_input, axis=1)
 
         sd_Y = np.std(self.y_input, axis=1, ddof=1)
-
-        if np.any(sd_Y==0):
-            print("⚠️ Amaran: Bacaan Y tanpa varians. Sila pastikan bahawa ini bukan suatu kesilapan.")
-            print("⚠️ Nilai SD=0 telah digantikan dengan SD=1e-6, sila semak kesannya ke atas kesimpulan analisis.")
-
-        sd_Y[sd_Y==0] = 1e-6
-        
         pemberat = 1 / sd_Y
 
         X = sm.add_constant(X)
@@ -72,23 +66,23 @@ class WDRegresi:
         sd_x = np.std(self.x_input, axis=1, ddof=1)
         sd_y = np.std(self.y_input, axis=1, ddof=1)
 
-        if np.any(sd_x==0):
-            print("⚠️ Amaran: Bacaan X tanpa varians. Sila pastikan bahawa ini bukan suatu kesilapan.")
-            print("⚠️ Nilai SD=0 telah digantikan dengan SD=1e-6, sila semak kesannya ke atas kesimpulan analisis.")
-
-        if np.any(sd_y==0):
-            print("⚠️ Amaran: Bacaan Y tanpa varians. Sila pastikan bahawa ini bukan suatu kesilapan.")
-            print("⚠️ Nilai SD=0 telah digantikan dengan SD=1e-6, sila semak kesannya ke atas kesimpulan analisis.")
-
-        sd_x[sd_x==0] = 1e-6
-        sd_y[sd_y==0] = 1e-6
-        
         model = Model(WDRegresi.fungsi_linear)
         data = RealData(X, Y, sx=sd_x, sy=sd_y)
-        odr = ODR(data, model, beta0=[1, 1])
+        odr = ODR(data, model, beta0=[0, 1])
 
         hasil = odr.run()
-        hasil.pprint()
+        
+        beta = hasil.beta
+        se_beta = hasil.sd_beta
+        df = len(X) - len(beta)
+        t_stat = t.ppf(1 - 0.05 / 2, df)
+
+        bawah = beta - t_stat * se_beta
+        atas = beta + t_stat * se_beta
+
+        print(f'Persamaan regresi: y = {beta[0]:.4f} + {beta[1]:.4f}x')
+        print(f'95% CI Kecerunan: {bawah[1]:.4f} , {atas[1]:.4f}')
+        print(f'95% CI Pintasan: {bawah[0]:.4f} , {atas[0]:.4f}')
 
 
 @dataclass
