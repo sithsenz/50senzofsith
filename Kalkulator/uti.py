@@ -148,7 +148,8 @@ class Grid:
                 value=1,
                 description=t,
                 disabled=False,
-                layout=Layout(width="300px"),
+                layout=Layout(width="200px"),
+                style={'description_width': "100px"}
             )
 
         return grid
