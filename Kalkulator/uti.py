@@ -1,5 +1,6 @@
 import ipywidgets as widgets
 import matplotlib.pyplot as plt
+import numpy as np
 
 
 from dataclasses import dataclass
@@ -17,46 +18,14 @@ except ModuleNotFoundError:
 
 @dataclass
 class BlandAltman:
-    x_input: str
-    y_input: str
-    ralat: str = f'''
-⚠️ Ralat input! Sila semak semula format data anda. Pastikan:
-- Nombor dipisahkan dengan koma (cth: 4.5, 5.0, 4.8)
-- Tiada huruf atau simbol lain
-- Tiada koma berlebihan
-'''
+    x_input: list
+    y_input: list
 
-    def plot(self):
-        try:
-            X, Y = [], []
+    X = np.mean(x_input, axis=1)
+    Y = np.mean(y_input, axis=1)
 
-            for x in self.x_input.split(','):
-                if x.strip():
-                    X.append(float(x.strip()))
-
-            for y in self.y_input.split(','):
-                if y.strip():
-                    Y.append(float(y.strip()))
-            
-            mesej: str = f'''
-⚠️ Ralat input! Bilangan data x_input dan y_input harus sama.
-x_input mengandungi {len(X)} data, manakala
-y_input mengandungi {len(Y)} data.
-'''
-
-            if len(X) != len(Y):
-                raise ValueError(mesej)
-            
-            blandAltman(Y, X, confidenceInterval=None)
-            plt.show()
-
-        except ValueError as ve:
-            if "could not convert string to float" in str(ve):
-                print(self.ralat)
-            
-            print(ve)
-        except Exception:
-            print(self.ralat)
+    blandAltman(Y, X, confidenceInterval=None)
+    plt.show()
 
 
 @dataclass
@@ -71,7 +40,7 @@ class Grid:
 
     def sampel(self):
         grid = GridspecLayout(self.baris, self.lajur, layout=Layout(width="100%"))
-        
+
         label = ["bil n", "bil x", "bil y"]
 
         for j, t in enumerate(label):
@@ -82,9 +51,9 @@ class Grid:
                 disabled=False,
                 layout=Layout(width="200px"),
             )
-        
+
         return grid
-    
+
     def data(self, change=None):
         bil_n = self.gridS[0,0].value
         bil_x = self.gridS[0,1].value
@@ -118,14 +87,14 @@ class Grid:
                         )
 
                         baris_wj.append(wj)
-                    
+
                     self.gridD[i,j] = wj
-                
+
                 if i>0:
                     self.wj_data.append(baris_wj)
-            
+
             display(self.gridD)
-    
+
     def ambilData(self):
         data = {
             "x": [],
@@ -134,14 +103,14 @@ class Grid:
 
         if not self.wj_data:
             return data
-        
+
         bil_x = self.gridS[0,1].value
 
         for baris in self.wj_data:
             nilai_x = [w.value for w in baris[:bil_x]]
             nilai_y = [w.value for w in baris[bil_x:]]
-            
+
             data["x"].append(nilai_x)
             data["y"].append(nilai_y)
-        
+
         return data
