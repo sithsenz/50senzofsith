@@ -38,8 +38,12 @@ class WLSRegresi:
     y_input: list
 
     def cetak(self):
-        if np.array(y_input).shape[1] < 2:
-            print("⚠️ Analisis Regresi WLS memerlukan sekurang-kurangnya 2 data ulangan y")
+        if len(x_input) < 3:
+            print("⚠️ Analisis Regresi WLS memerlukan sekurang-kurangnya 3 sampel.")
+        return
+        
+        if len(y_input[0]) < 2:
+            print("⚠️ Analisis Regresi WLS memerlukan sekurang-kurangnya 2 data ulangan y.")
         return
         
         X = np.mean(self.x_input, axis=1)
@@ -72,12 +76,16 @@ class WDRegresi:
         return beta[0] + beta[1] * x
 
     def cetak(self):
-        if np.array(x_input) < 2:
-            print("⚠️ Analisis Regresi Weighted Deming memerlukan sekurang-kurangnya 2 data ulangan x")
+        if len(x_input) < 3:
+            print("⚠️ Analisis Regresi Weighted Deming memerlukan sekurang-kurangnya 3 sampel.")
+            return
+        
+        if len(x_input[0]) < 2:
+            print("⚠️ Analisis Regresi Weighted Deming memerlukan sekurang-kurangnya 2 data ulangan x.")
             return
 
-        if np.array(y_input) < 2:
-            print("⚠️ Analisis Regresi Weighted Deming memerlukan sekurang-kurangnya 2 data ulangan y")
+        if len(y_input[0]) < 2:
+            print("⚠️ Analisis Regresi Weighted Deming memerlukan sekurang-kurangnya 2 data ulangan y.")
             return
 
         X = np.mean(self.x_input, axis=1)
