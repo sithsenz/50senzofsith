@@ -1,11 +1,13 @@
 import ipywidgets as widgets
 import matplotlib.pyplot as plt
 import numpy as np
+import statsmodels.api as sm
 
 
 from dataclasses import dataclass
 from IPython.display import display
 from ipywidgets import GridspecLayout, Layout
+from scipy.odr import Model, RealData, ODR
 
 
 try:
@@ -27,6 +29,48 @@ class BlandAltman:
 
         blandAltman(Y, X, confidenceInterval=None)
         plt.show()
+
+
+@dataclass
+class WLSRegresi:
+    x_input: list
+    y_input: list
+
+    def cetak(self):
+        X = np.mean(self.x_input, axis=1)
+        Y = np.mean(self.y_input, axis=1)
+
+        sd_Y = np.std(self.y_input, axis=1, ddof=1)
+        pemberat = 1 / sd_Y
+
+        X = sm.add_constant(X)
+        model = sm.WLS(Y, X, weights=pemberat)
+        results = model.fit()
+
+        print(results.summary())
+
+
+@dataclass
+class WDRegresi:
+    x_input: list
+    y_input: list
+
+    def fungsi_linear(beta, x):
+        return beta[0] + beta[1] * x
+
+    def cetak(self):
+        X = np.mean(self.x_input, axis=1)
+        Y = np.mean(self.y_input, axis=1)
+
+        sd_x = np.std(self.x_input, axis=1, ddof=1)
+        sd_y = np.std(self.y_input, axis=1, ddof=1)
+
+        model = Model(WDRegresi.fungsi_linear)
+        data = RealData(X, Y, sx=sd_x, sy=sd_y)
+        odr = ODR(data, model, beta0=[1, 1])
+
+        hasil = odr.run()
+        hasil.pprint()
 
 
 @dataclass
