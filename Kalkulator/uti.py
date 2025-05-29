@@ -21,11 +21,12 @@ class BlandAltman:
     x_input: list
     y_input: list
 
-    X = np.mean(x_input, axis=1)
-    Y = np.mean(y_input, axis=1)
+    def plot(self):
+        X = np.mean(self.x_input, axis=1)
+        Y = np.mean(self.y_input, axis=1)
 
-    blandAltman(Y, X, confidenceInterval=None)
-    plt.show()
+        blandAltman(Y, X, confidenceInterval=None)
+        plt.show()
 
 
 @dataclass
