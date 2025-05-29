@@ -38,11 +38,11 @@ class WLSRegresi:
     y_input: list
 
     def cetak(self):
-        if len(x_input) < 3:
+        if len(self.x_input) < 3:
             print("⚠️ Analisis Regresi WLS memerlukan sekurang-kurangnya 3 sampel.")
         return
         
-        if len(y_input[0]) < 2:
+        if len(self.y_input[0]) < 2:
             print("⚠️ Analisis Regresi WLS memerlukan sekurang-kurangnya 2 data ulangan y.")
         return
         
@@ -76,15 +76,15 @@ class WDRegresi:
         return beta[0] + beta[1] * x
 
     def cetak(self):
-        if len(x_input) < 3:
+        if len(self.x_input) < 3:
             print("⚠️ Analisis Regresi Weighted Deming memerlukan sekurang-kurangnya 3 sampel.")
             return
         
-        if len(x_input[0]) < 2:
+        if len(self.x_input[0]) < 2:
             print("⚠️ Analisis Regresi Weighted Deming memerlukan sekurang-kurangnya 2 data ulangan x.")
             return
 
-        if len(y_input[0]) < 2:
+        if len(self.y_input[0]) < 2:
             print("⚠️ Analisis Regresi Weighted Deming memerlukan sekurang-kurangnya 2 data ulangan y.")
             return
 
@@ -148,7 +148,7 @@ class Grid:
                 value=1,
                 description=t,
                 disabled=False,
-                layout=Layout(width="200px"),
+                layout=Layout(width="300px"),
             )
 
         return grid
