@@ -103,8 +103,8 @@ class WDRegresi:
         atas = beta + t_stat * se_beta
 
         print(f'Persamaan regresi: y = {beta[0]:.4f} + {beta[1]:.4f}x')
-        print(f'95% CI Kecerunan: {bawah[1]:.4f} , {atas[1]:.4f}')
-        print(f'95% CI Pintasan: {bawah[0]:.4f} , {atas[0]:.4f}')
+        print(f'95% CI Kecerunan: [{bawah[1]:.4f} , {atas[1]:.4f}]')
+        print(f'95% CI Pintasan: [{bawah[0]:.4f} , {atas[0]:.4f}]')
 
 
 @dataclass
