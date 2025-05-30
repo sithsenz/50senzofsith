@@ -25,16 +25,11 @@ Kaedah regresi yang mengambil kira ralat pada kedua-dua paksi X dan Y, sesuai un
 
 ## Akses Kalkulator
 
-[![Buka di Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/sithsenz/50senzofsith/blob/main/Kalkulator/Buku_Kerja_MVN.ipynb)
+[![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/sithsenz/50senzofsith/blob/main/Kalkulator/Buku_Kerja_MVN.ipynb)
 
 Lihat versi statik notebook:
 
-<iframe 
-  src="https://nbviewer.org/github/sithsenz/50senzofsith/blob/main/Kalkulator/Buku_Kerja_MVN.ipynb" 
-  width="100%" 
-  height="800px" 
-  style="border: 1px solid #ccc;">
-</iframe>
+![](Images/kalkulatorMVN.png)
 
 *Arahan penggunaan penuh tersedia di dalam notebook.*
 
@@ -52,3 +47,5 @@ Lihat versi statik notebook:
 **S: Bolehkah saya guna keputusan daripada kalkulator ini untuk laporan rasmi?**  
 **J:** Ya. Anda boleh menggunakan hasil analisis seperti plot, persamaan regresi, dan statistik ringkasan dalam laporan anda.  
 Namun, sebarang kesimpulan mesti dibuat oleh pengguna sendiri berdasarkan interpretasi yang sesuai. Kalkulator ini tidak menjana kesimpulan automatik.
+
+*[Table of Content](../index.md)*
