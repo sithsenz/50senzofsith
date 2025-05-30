@@ -6,6 +6,8 @@
 + Measurement in Microbiological Laboratory
   + [Measurement Uncertainty in Qualitative Testing](measurement/mu_qual.md)
   + [Bayesian Derivation of Diagnostic Test Requirements](notes/bayesenz/CASOTA.md)
++ Online Calculator
+  + [Kalkulator Numerical Method Verification](Kalkulator/MVN.md)
 + Python
   + [FastAPI](fastapi/tutorial_fastapi.md)
 
