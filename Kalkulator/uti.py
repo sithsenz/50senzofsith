@@ -119,12 +119,15 @@ class WDRegresi:
         df = len(X) - len(beta)
         t_stat = t.ppf(1 - 0.05 / 2, df)
 
+        RMSE = np.sqrt(hasil.res_var)
+
         bawah = beta - t_stat * se_beta
         atas = beta + t_stat * se_beta
 
         print(f'Persamaan regresi: y = {beta[0]:.4f} + {beta[1]:.4f}x')
         print(f'95% CI Kecerunan: [{bawah[1]:.4f} , {atas[1]:.4f}]')
         print(f'95% CI Pintasan: [{bawah[0]:.4f} , {atas[0]:.4f}]')
+        print(f'RMSE = {RMSE:.4f}')
 
 
 @dataclass
