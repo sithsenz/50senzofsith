@@ -3,6 +3,8 @@
 
 ## Classical Linear Regression
 ### Data
+Here’s a simple dataset with a nearly perfect linear relationship between `X` and `Y`:
+
 <table>
   <tr>
     <th></th>
@@ -37,55 +39,74 @@
 </table>
 
 ### Linear Regression Model
-OLS Model produced using `statsmodel` *code not shown*
+Using ordinary least squares (OLS) via `statsmodels`(*code not shown*), we obtain:
 
-$$Y = 0.0031 + 0.9998X$$
-$$\text{95% CI of intercept} = \text{[-0.018 , 0.025]}$$
-$$\text{95% CI of slope} = \text{[0.996 , 1.004]}$$
+>$$Y = 0.0031 + 0.9998X$$
+
+With 95% confidence intervals:
+- Intercept: [-0.018, 0.025]
+- Slope: [0.996 , 1.004]
+
+This frequentist approach assumes that the only uncertainty lies in the dependent variable `Y`, and that the residuals are independent, normally distributed, and homoscedastic.
 
 ## Bayesian Regression (Simple)
-### Modelling Using PyMC
-Same import throughout this article
+Let’s now reframe the same linear model in a Bayesian framework using PyMC.
+
+### Model in PyMC
+Imports (used throughout this article):
+
 ```python
 import arviz as az
 import pymc as pm
 ```
 
+Model definition:
 ```python
 with pm.Model() as linmodel:
-  # prior
+  # Priors
   intercept = pm.Normal("intercept", mu=0, sigma=1)
   slope = pm.Normal("slope", mu=1, sigma=1)
   sigma = pm.HalfNormal("sigma", sigma=1)
 
-  # model
+  # Linear model
   y_pred = pm.Deterministic("model", intercept + slope * (X))
 
-  # likelihood
+  # Likelihood
   pm.Normal("y_pred", mu=y_pred, sigma=sigma, observed=Y)
 
-  # inference data
+  # Inference
   idata = pm.sample(2000, cores=4, nuts_kwargs={"target_accept": 0.95})
 ```
 
-Always use *Arviz*
-- to produce the summary of the analysis / model
-- hdi_prob always set to 0.95
+>ArviZ is used for model diagnostics and summaries.  
+>Set `hdi_prob` = 0.95 to compute the 95% highest density intervals (HDIs).
 
-### linmodel
+### Posterior Summary
 
-$$Y = 0.003 + 1.000X$$
-$$\text{95% CrI of intercept} = \text{[-0.039 , 0.038]}$$
-$$\text{95% CrI of slope} = \text{[0.993 , 1.008]}$$
+The estimated regression line is:
+
+>$$Y = 0.003 + 1.000X$$
+
+With 95% credible intervals:
+- Intercept: [−0.039, 0.038]
+- Slope: [0.993, 1.008]
+
+The Bayesian approach treats the model parameters as distributions, not fixed values. The result is a full posterior distribution over all parameters, giving us more than just point estimates -- it gives us uncertainty.
 
 ## Heteroscedasticity in Bayesian
-Heteroscedasticity = proportional error in the Y variable
+
+### What is Heteroscedasticity?
+Heteroscedasticity occurs when the variability of the residuals (errors) depends on the value of `X`. In simpler terms, the spread of `Y` increases (or decreases) along the range of `X`. This violates a key assumption of classical OLS regression: constant variance (homoscedasticity).
+
+OLS is not well-equipped for heteroscedastic data. In frequentist settings, one workaround is weighted least squares (WLS) -- a method that can get quite nuanced and brittle.
+
+In Bayesian modelling, heteroscedasticity is straightforward to implement.
+
 ![](images/heteroscedasticity.jpg)
 
-OLS assumes homoscedasticity, not suitable.
-Frequentist solution is to use weighted least squares. WLS is nuanced and not straightforward.
-
 ### Data
+In this example, each `Y` value is the average of three repeated measurements (`y1`, `y2`, `y3`​), and the standard deviation (`sdy`) at each point reflects measurement error that increases with `X`:
+
 <table>
   <tr>
     <th></th>
@@ -93,8 +114,8 @@ Frequentist solution is to use weighted least squares. WLS is nuanced and not st
     <th>y1</th>
     <th>y2</th>
     <th>y3</th>
-    <th>Y = mean of y</th>
-    <th>sdy = std of y</th>
+    <th>Y</th>
+    <th>sdy</th>
   </tr>
   <tr>
     <td>1</td>
@@ -143,45 +164,58 @@ Frequentist solution is to use weighted least squares. WLS is nuanced and not st
   </tr>
 </table>
 
-### Modelling Heteroscedasticity
-WLS Model produced using `statsmodel` *code not shown*
+###Frequentist WLS (Weighted Least Squares)
 
-$$Y = 0.0057 + 1.0989X$$
-$$\text{95% CI of intercept} = \text{[-0.014 , 0.025]}$$
-$$\text{95% CI of slope} = \text{[1.096 , 1.102]}$$
+Using WLS in `statsmodels` (*code not shown*):
+>$$Y = 0.0057 + 1.0989X$$
 
-#### Using PyMC  
-Slight edition to the basic code. In the likelihood of y_pred, the sigma is now informative (from the data) and not sampled from a HalfNormal distribution anymore.
+With 95% confidence intervals:
+- Intercept: [−0.014, 0.025]
+- Slope: [1.096, 1.102]
+
+### Bayesian Modelling with Heteroscedasticity
+
+All we need to do in `PyMC` is replace the constant error term `sigma` with a known, data-derived `sdy`:
 
 ```python
 with pm.Model() as hetmodel:
-  # prior
+  # Priors
   intercept = pm.Normal("intercept", mu=0, sigma=1)
   slope = pm.Normal("slope", mu=1, sigma=1)
   
-  # model
+  # Linear model
   y_pred = pm.Deterministic("model", intercept + slope * (X))
 
-  # likelihood
+  # Likelihood using observed heteroscedastic error
   pm.Normal("y_pred", mu=y_pred, sigma=sdy, observed=Y)
 
   # inference data
   idata = pm.sample(2000, cores=4, nuts_kwargs={"target_accept": 0.95})
 ```
 
-#### hetmodel
-$$Y = -0.001 + 1.102X$$
-$$\text{95% CrI of intercept} = \text{[-0.003 , 0.001]}$$
-$$\text{95% CrI of slope} = \text{[1.101 , 1.103]}$$
+#### Posterior Summary
 
-## Error-in-variables (Uncertainty in X and Y)
-Both X and Y has measurement error.
+Bayesian model estimates:
+>$$Y = -0.001 + 1.102X$$
+
+With 95% credible intervals:
+- Intercept: [−0.003, 0.001]
+- Slope: [1.101, 1.103]
+
+Bayesian models allow you to model heteroscedasticity directly and transparently by encoding the varying uncertainty directly in the likelihood -- no special workaround needed.
+
+## Error-in-variables (Uncertainty in Both X and Y)
+Now let’s address a more challenging scenario: both `X` and `Y` have measurement error. This situation frequently arises in real-world experiments.
 
 ![](images/ODRA.jpg)
 
-Frequestist analysis becomes much more complicated. One of the popular solution is by using weighted Deming regression.
+### Why Frequentist Methods Struggle
+In the frequentist framework, accounting for measurement error in the independent variable `X` leads to nontrivial models. One commonly used solution is Deming regression, which assumes known variances in both `X` and `Y` and minimizes orthogonal distances rather than vertical residuals.
+
+Even with Deming regression, generalizing to weighted, multivariable, or non-Gaussian cases becomes increasingly messy.
 
 ### Data
+Each `X` and `Y` value below is the average of three measurements, with associated standard deviations:
 
 <table>
   <tr>
@@ -192,10 +226,10 @@ Frequestist analysis becomes much more complicated. One of the popular solution 
     <th>y1</th>
     <th>y2</th>
     <th>y3</th>
-    <th>X = mean of x</th>
-    <th>sdx = std of x</th>
-    <th>Y = meand of y</th>
-    <th>sdy = std of y</th>
+    <th>X</th>
+    <th>sdx</th>
+    <th>Y</th>
+    <th>sdy</th>
   </tr>
   <tr>
     <td>1</td>
@@ -264,36 +298,55 @@ Frequestist analysis becomes much more complicated. One of the popular solution 
   </tr>
 </table>
 
-Weighted Deming Regression produced by using `scipy` *code not shown*
+### Weighted Deming Regression (Frequentist)
+Estimated model:
+>$$Y = -0.0227 + 1.1008X$$
 
-$$Y = -0.0227 + 1.1008X$$
-$$\text{95% CI of intercept} = \text{[-0.0268 , -0.0186]}$$
-$$\text{95% CI of slope} = \text{[1.0995 , 1.1020]}$$
+95% confidence intervals:
+- Intercept: [−0.0268, −0.0186]
+- Slope: [1.0995, 1.1020]
 
-#### Using PyMC  
-Slight edition to the basic code. In the likelihood of y_pred, the sigma is now informative (from the data) and not sampled from a HalfNormal distribution anymore. On the other hand, a latent variable x_mean was created with its prior set to the observed x.
+### Bayesian Error-in-Variables Model
+
+Here’s where Bayesian methods shine. We simply:
+- Add a latent variable for the true `X` values, modeled with a normal prior centered at the observed `X`, with standard deviation `sdx`.
+- Retain the `sdy` information in the likelihood, as before.
 
 ```python
 with pm.Model() as errmodel:
-  # prior
+  # Priors
   intercept = pm.Normal("intercept", mu=0, sigma=5)
   slope = pm.Normal("slope", mu=1, sigma=5)
+
+  # Latent variable: true X values
   x_mean = pm.Normal("x_mean", mu=X, sigma=sdx)
   
-  # model
+  # Linear model
   y_pred = pm.Deterministic("model", intercept + slope * (x_mean))
 
-  # likelihood
+  # Likelihood with observed error in Y
   pm.Normal("y_pred", mu=y_pred, sigma=sdy, observed=Y)
 
-  # inference data
+  # Inference
   idata = pm.sample(2000, cores=4, nuts_kwargs={"target_accept": 0.95})
 ```
 
-#### errmodel
+#### Posterior Summary
+Estimated model:
+>$$Y = -0.022 + 1.101X$$
 
-$$Y = -0.022 + 1.101X$$
-$$\text{95% CrI of intercept} = \text{[-0.026 , -0.018]}$$
-$$\text{95% CrI of slope} = \text{[1.099 , 1.102]}$$
+95% credible intervals:
+- Intercept: [−0.026, −0.018]
+- Slope: [1.099, 1.102]
+
+With PyMC, extending your model to account for measurement uncertainty in both `X` and `Y` is seamless. This is a powerful advantage over frequentist approaches that require special-case solutions.
+
+## Summary
+Bayesian regression provides a natural and extensible framework to handle various forms of uncertainty:
+- Basic linear regression is straightforward and gives full posterior distributions.
+- Heteroscedasticity is easily handled by plugging in known sigma values per observation.
+- Error-in-variables becomes a simple matter of introducing latent variables.
+
+Unlike frequentist solutions that often require entirely new techniques or approximations, Bayesian modelling with PyMC evolves incrementally, retaining model transparency and interpretability.
 
 *[Table of Content](../../index.md)*
