@@ -1,5 +1,5 @@
 # Bayesian Regression
-*Last updated 2025-06-01*
+*Last updated 2025-06-02*
 
 ## Classical Linear Regression
 ### Data
@@ -164,7 +164,7 @@ In this example, each `Y` value is the average of three repeated measurements (`
   </tr>
 </table>
 
-###Frequentist WLS (Weighted Least Squares)
+### Frequentist WLS (Weighted Least Squares)
 
 Using WLS in `statsmodels` (*code not shown*):
 >$$Y = 0.0057 + 1.0989X$$
